@@ -1,0 +1,27 @@
+{"stream":"Step 1/6 : FROM node:23"}
+{"stream":"\n"}
+{"stream":" ---\u003e 9a25b5a6f9a9\n"}
+{"stream":"Step 2/6 : WORKDIR /app"}
+{"stream":"\n"}
+{"stream":" ---\u003e Using cache\n"}
+{"stream":" ---\u003e de681e9f45de\n"}
+{"stream":"Step 3/6 : COPY package*.json ./"}
+{"stream":"\n"}
+{"stream":" ---\u003e Using cache\n"}
+{"stream":" ---\u003e f61ffcb3701e\n"}
+{"stream":"Step 4/6 : RUN npm install"}
+{"stream":"\n"}
+{"stream":" ---\u003e Using cache\n"}
+{"stream":" ---\u003e 735b44ac7a66\n"}
+{"stream":"Step 5/6 : COPY . ."}
+{"stream":"\n"}
+{"stream":" ---\u003e Using cache\n"}
+{"stream":" ---\u003e a4eaa5aa2826\n"}
+{"stream":"Step 6/6 : CMD [\"npm\", \"test\"]"}
+{"stream":"\n"}
+{"stream":" ---\u003e Running in 7428639ede0e\n"}
+{"stream":" ---\u003e Removed intermediate container 7428639ede0e\n"}
+{"stream":" ---\u003e f582b063dbbe\n"}
+{"aux":{"ID":"sha256:f582b063dbbecb38a51a9f74f157ae74403520a043fe7ea8a675a89a71769fc6"}}
+{"stream":"Successfully built f582b063dbbe\n"}
+{"stream":"Successfully tagged test-project:latest\n"}

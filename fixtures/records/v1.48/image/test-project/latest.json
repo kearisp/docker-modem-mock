@@ -1,0 +1,78 @@
+{
+    "Id": "sha256:dded35145892d678539f2b842b9a2c54de7b930896ae67f47fe2ed6e4b6c3d76",
+    "RepoTags": [
+        "test-project:latest"
+    ],
+    "RepoDigests": [
+        "test-project@sha256:dded35145892d678539f2b842b9a2c54de7b930896ae67f47fe2ed6e4b6c3d76"
+    ],
+    "Parent": "",
+    "Comment": "buildkit.dockerfile.v0",
+    "Created": "2025-05-23T21:48:24.54763548Z",
+    "DockerVersion": "",
+    "Author": "",
+    "Config": {
+        "Hostname": "",
+        "Domainname": "",
+        "User": "",
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "AttachStderr": false,
+        "Tty": false,
+        "OpenStdin": false,
+        "StdinOnce": false,
+        "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "NODE_VERSION=23.11.1",
+            "YARN_VERSION=1.22.22"
+        ],
+        "Cmd": [
+            "npm",
+            "test"
+        ],
+        "ArgsEscaped": true,
+        "Image": "",
+        "Volumes": null,
+        "WorkingDir": "/app",
+        "Entrypoint": [
+            "docker-entrypoint.sh"
+        ],
+        "OnBuild": null,
+        "Labels": null
+    },
+    "Architecture": "amd64",
+    "Os": "linux",
+    "Size": 407523853,
+    "GraphDriver": {
+        "Data": null,
+        "Name": "overlayfs"
+    },
+    "RootFS": {
+        "Type": "layers",
+        "Layers": [
+            "sha256:2f7436e79a0bc6cdec6536da54ae6a5863c8e3b5f145e0f8ac0b96306baddbc9",
+            "sha256:6428cc293366f93395949a2d1efd9b89c898c7a4a124051c3793c1faf7664269",
+            "sha256:e4dc8cd9ecc886f56babec383662506d94a28645c1a31085deaf7870366ec225",
+            "sha256:ce84ba212e49beebef47aad10b1e672eb0532e91d313994f6db7fb16e16c7a78",
+            "sha256:ad7000cde035f3d5d1f5e20038791cc80603a04f14b86b22704e9c9383c6b0e0",
+            "sha256:eb751aaf99f0392fbab8acd5ac0dfa3e49cb27db9d3b3ce5dc4f6ba3cc23b88d",
+            "sha256:33f75ed060fdf99bc8afe017954283099b67ef87168ae1e79410aaf509b6dafd",
+            "sha256:c2be900b9f521bdf0afe07211fb51ba62785fb85b68870fe6ce7400dff7cbdd1",
+            "sha256:9a8d9433359084d7f57f7a3185f0cb23c49568dba7d1a58e83ce94ea5022d2d4",
+            "sha256:179296cc0ca0af097cf31e8cd69904da98766872102e6bc9d40fe9c138539e43",
+            "sha256:78d8bec79dd7ed2092e9acff92b8bb32f73d0340ffe0e04fe2437c4430649ee5",
+            "sha256:f53a3312e1ef22898f77952264ab094110ddecd818e060892e175b1a502ceaf8"
+        ]
+    },
+    "Metadata": {
+        "LastTagTime": "2025-05-23T21:58:02.975409975Z"
+    },
+    "Descriptor": {
+        "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+        "digest": "sha256:dded35145892d678539f2b842b9a2c54de7b930896ae67f47fe2ed6e4b6c3d76",
+        "size": 2666,
+        "annotations": {
+            "config.digest": "sha256:961550484393888a4dd18763bcb8c3b40c64d32214c66460f171bf1b216a2832"
+        }
+    }
+}

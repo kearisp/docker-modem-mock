@@ -1,0 +1,10 @@
+{
+    "name": "test-project",
+    "version": "1.0.0",
+    "description": "Test project for testing purposes",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "test": "jest"
+    }
+}
