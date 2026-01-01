@@ -51,6 +51,12 @@ export class DockerStorage {
             res.send(Buffer.from([]));
         });
 
+        this.router.post(["/containers/:id/stop", "/:version/containers/:id/stop"], (req: Request, res: Response): void => {
+            this.stop(req.params.id)
+
+            res.status(200).send({});
+        });
+
         this.router.get(["/images/json", "/:version/images/json"], (req: Request, res: Response): void => {
             res.status(200).send(this.imageList(req.body));
         });
@@ -162,6 +168,17 @@ export class DockerStorage {
 
         container.State.Running = true;
         container.State.Status = "running";
+    }
+
+    public stop(id: string) {
+        const container = this.containers.find((c) => c.Id === id);
+
+        if(!container) {
+            throw new Error(`No such container: ${id}`);
+        }
+
+        container.State.Running = false;
+        container.State.Status = "exited";
     }
 
     public containerInspect(id: string) {

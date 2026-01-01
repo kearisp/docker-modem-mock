@@ -138,7 +138,7 @@ describe("ModemMock", () => {
             Image: "oven/bun:latest"
         });
 
-        const inspectInfo = await container.inspect();
+        let inspectInfo = await container.inspect();
 
         expect(inspectInfo.Id).toBe(container.id);
         expect(inspectInfo.State.Running).toBeFalsy();
@@ -148,14 +148,23 @@ describe("ModemMock", () => {
 
         await container.start();
 
-        const inspectInfo2 = await container.inspect();
+        inspectInfo = await container.inspect();
 
-        expect(inspectInfo2.Id).toBe(container.id);
-        expect(inspectInfo2.State.Running).toBeTruthy();
-        expect(inspectInfo2.State.Dead).toBeFalsy();
-        expect(inspectInfo2.State.Status).toBe("running");
-        expect(inspectInfo2.State.Error).toBe("");
+        expect(inspectInfo.Id).toBe(container.id);
+        expect(inspectInfo.State.Running).toBeTruthy();
+        expect(inspectInfo.State.Dead).toBeFalsy();
+        expect(inspectInfo.State.Status).toBe("running");
+        expect(inspectInfo.State.Error).toBe("");
+
+        await container.stop();
+
+        inspectInfo = await container.inspect();
+
+        expect(inspectInfo.Id).toBe(container.id);
+        expect(inspectInfo.State.Running).toBeFalsy();
 
         // const containers = await docker.listContainers();
+
+        // console.log(containers.length);
     });
 });

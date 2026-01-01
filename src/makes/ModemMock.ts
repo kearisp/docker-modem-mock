@@ -23,7 +23,7 @@ export class ModemMock extends Modem {
         this.storage = new DockerStorage();
 
         if(mockFixtures) {
-            this.storage.registerFixtures(mockFixtures);
+            this.registerFixtures(mockFixtures);
         }
     }
 
