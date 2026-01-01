@@ -1,0 +1,49 @@
+{
+    "name": "docker-modem-mock",
+    "description": "A mock implementation of docker-modem for testing purposes",
+    "type": "commonjs",
+    "version": "0.0.1",
+    "author": "Kris Papercut <krispcut@gmail.com>",
+    "license": "MIT",
+    "main": "./lib/index.js",
+    "types": "./lib/index.d.ts",
+    "keywords": [
+        "docker-modem"
+    ],
+    "homepage": "https://kearisp.github.io/wocker",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kearisp/docker-modem-mock.git"
+    },
+    "bugs": {
+        "url": "https://github.com/kearisp/docker-modem-mock/issues"
+    },
+    "scripts": {
+        "prepublishOnly": "npm run build",
+        "build": "tsc --project tsconfig.build.json",
+        "watch": "tsc -w --project tsconfig.build.json",
+        "test": "jest --colors",
+        "test-watch": "jest --colors --watchAll --coverage",
+        "make-coverage-badge": "make-coverage-badge"
+    },
+    "peerDependencies": {
+        "docker-modem": "^5.0.6"
+    },
+    "dependencies": {
+        "@wocker/core": "^1.0.27"
+    },
+    "devDependencies": {
+        "@types/dockerode": "^3.3.47",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^25.0.2",
+        "docker-modem": "^5.0.6",
+        "dockerode": "^4.0.9",
+        "jest": "^30.2.0",
+        "make-coverage-badge": "^1.2.0",
+        "memfs": "^4.51.1",
+        "ts-jest": "^29.4.6",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.9.3",
+        "unionfs": "^4.6.0"
+    }
+}
