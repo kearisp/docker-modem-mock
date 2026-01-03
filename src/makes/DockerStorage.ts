@@ -57,6 +57,14 @@ export class DockerStorage {
             res.status(200).send({});
         });
 
+        this.router.delete(["/containers/:id", "/:version/containers/:id"], (req: Request, res: Response) => {
+            this.containers = this.containers.filter((container) => {
+                return container.Id === req.params.id;
+            });
+
+            res.status(200).send({});
+        });
+
         this.router.get(["/images/json", "/:version/images/json"], (req: Request, res: Response): void => {
             res.status(200).send(this.imageList(req.body));
         });
