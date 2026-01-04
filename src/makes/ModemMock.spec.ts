@@ -163,8 +163,10 @@ describe("ModemMock", () => {
         expect(inspectInfo.Id).toBe(container.id);
         expect(inspectInfo.State.Running).toBeFalsy();
 
-        // const containers = await docker.listContainers();
+        await container.remove();
 
-        // console.log(containers.length);
+        const containers = await docker.listContainers();
+
+        expect(containers.length).toBe(0);
     });
 });
