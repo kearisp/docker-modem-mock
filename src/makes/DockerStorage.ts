@@ -46,15 +46,77 @@ export class DockerStorage {
         });
 
         this.router.post(["/containers/:id/start", "/:version/containers/:id/start"], (req: Request, res: Response): void => {
-            this.run(req.params.id);
+            const container = this.containers.find((container) => container.Id === req.params.id);
 
-            res.send(Buffer.from([]));
+            if(!container) {
+                res.status(404).send({
+                    message: `No such container: ${req.params.id}`
+                });
+
+                return;
+            }
+
+            if(container.State.Running) {
+                res.status(304).send({
+                    message: "container already started"
+                });
+
+                return;
+            }
+
+            container.State.Running = true;
+            container.State.Status = "running";
+
+            res.status(204).send({});
         });
 
         this.router.post(["/containers/:id/stop", "/:version/containers/:id/stop"], (req: Request, res: Response): void => {
-            this.stop(req.params.id)
+            this.stop(req.params.id);
 
             res.status(200).send({});
+        });
+
+        this.router.post(["/containers/:id/restart", "/:version/containers/:id/restart"], (req, res) => {
+            const container = this.containers.find((container) => {
+                return container.Id === req.params.id;
+            });
+
+            if(!container) {
+                res.status(404).send({
+                    message: `No such container: ${req.params.id}`
+                });
+
+                return;
+            }
+
+            // container.
+
+            res.status(204).send({});
+        });
+
+        this.router.post(["/containers/:id/kill", "/:version/containers/:id/kill"], (req, res) => {
+            const container = this.getContainer(req.params.id);
+
+            if(!container) {
+                res.status(404).send({
+                    message: `No such container: ${req.params.id}`
+                });
+
+                return;
+            }
+
+            if(!container.State.Running) {
+                res.status(409).send({
+                    message: `Container is not running`
+                });
+
+                return;
+            }
+
+            container.State.Running = false;
+            container.State.Status = "exited";
+
+            res.status(204).send({});
         });
 
         this.router.delete(["/containers/:id", "/:version/containers/:id"], (req: Request, res: Response) => {
@@ -116,6 +178,12 @@ export class DockerStorage {
         });
     }
 
+    public getContainer(id: string) {
+        return this.containers.find((container) => {
+            return container.Id === id;
+        });
+    }
+
     public listContainers(body: any): any[] {
         const {
             all,
@@ -165,17 +233,6 @@ export class DockerStorage {
         this.containers.push(container);
 
         return container.Id;
-    }
-
-    public run(id: string) {
-        const container = this.containers.find((container) => container.Id === id);
-
-        if(!container) {
-            throw new Error(`No such container: ${id}`);
-        }
-
-        container.State.Running = true;
-        container.State.Status = "running";
     }
 
     public stop(id: string) {
