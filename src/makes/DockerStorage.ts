@@ -89,8 +89,6 @@ export class DockerStorage {
                 return;
             }
 
-            // container.
-
             res.status(204).send({});
         });
 
@@ -123,6 +121,20 @@ export class DockerStorage {
             this.containers = this.containers.filter((container) => {
                 return container.Id === req.params.id;
             });
+
+            res.status(200).send({});
+        });
+
+        this.router.post(["/containers/:id/resize", "/:version/containers/:id/resize"], (req, res) => {
+            const container = this.getContainer(req.params.id);
+
+            if(!container) {
+                res.status(404).send({
+                    message: `No such container: ${req.params.id}`
+                });
+
+                return;
+            }
 
             res.status(200).send({});
         });
