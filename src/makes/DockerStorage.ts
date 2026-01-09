@@ -139,6 +139,22 @@ export class DockerStorage {
             res.status(200).send({});
         });
 
+        this.router.post(["/containers/:id/rename", "/:version/containers/:id/rename"], (req, res) => {
+            const container = this.getContainer(req.params.id);
+
+            if(!container) {
+                res.status(404).send({
+                    message: `No such container: ${req.params.id}`
+                });
+
+                return;
+            }
+
+            container.Name = req.body.name;
+
+            res.status(204).send({});
+        });
+
         this.router.get(["/images/json", "/:version/images/json"], (req: Request, res: Response): void => {
             res.status(200).send(this.imageList(req.body));
         });
