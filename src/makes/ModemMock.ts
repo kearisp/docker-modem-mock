@@ -4,9 +4,14 @@ import type {
     DialOptions,
     RequestCallback
 } from "docker-modem";
+import {Router} from "../router";
 import {DockerStorage} from "./DockerStorage";
 import {Fixtures} from "./Fixtures";
 import {HttpMethod} from "../types/HttpMethod";
+import {SessionController} from "../controllers/SessionController";
+import {ContainerController} from "../controllers/ContainerController";
+import {ImageController} from "../controllers/ImageController";
+import {ResponseException} from "../exceptions/ResponseException";
 
 
 type Options = ConstructorOptions & {
@@ -14,13 +19,19 @@ type Options = ConstructorOptions & {
 };
 
 export class ModemMock extends Modem {
+    protected readonly mockRouter: Router;
     protected storage: DockerStorage;
     protected version!: string;
 
     public constructor({mockFixtures, ...rest}: Options) {
         super(rest);
 
+        this.mockRouter = new Router();
         this.storage = new DockerStorage();
+
+        new SessionController(this.mockRouter);
+        new ContainerController(this.mockRouter, this.storage);
+        new ImageController(this.mockRouter, this.storage);
 
         if(mockFixtures) {
             this.registerFixtures(mockFixtures);
@@ -30,7 +41,7 @@ export class ModemMock extends Modem {
     public dial(options: DialOptions, callback?: RequestCallback): void {
         const {
             method,
-            // statusCodes,
+            statusCodes = {},
             options: body,
             file
         } = options;
@@ -49,13 +60,28 @@ export class ModemMock extends Modem {
             }
 
             try {
-                const result = await this.storage.exec(
+                const res = await this.mockRouter.exec(
                     method as HttpMethod,
                     options.path,
                     body
                 );
 
-                callback && callback(null, result);
+                if(statusCodes[res.statusCode] !== true) {
+                    const err = new ResponseException(
+                        "(HTTP code " + res.statusCode + ") " +
+                        (statusCodes[res.statusCode] || "unexpected") + " - " +
+                        (res.body.message || res.body.error || res.body) + " ",
+                        res.statusCode,
+                        statusCodes[res.statusCode],
+                        res.body
+                    );
+
+                    callback && callback(err, null);
+
+                    return;
+                }
+
+                callback && callback(null, res.body);
             }
             catch(err) {
                 callback && callback(err as Error, null)
