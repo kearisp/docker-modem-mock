@@ -169,4 +169,27 @@ describe("ModemMock", () => {
 
         expect(containers.length).toBe(0);
     });
+
+    it("should rename container", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const container = await docker.createContainer({
+            name: "test.workspace",
+            Image: "oven/bun:latest"
+        });
+
+        await container.rename({
+            name: "test-1.workspace"
+        });
+
+        const list = await docker.listContainers({
+            all: true
+        });
+
+        expect(list.length).toBe(1);
+
+        if(list.length === 1) {
+            expect(list[0].Names).toEqual(["test-1.workspace"]);
+        }
+    });
 });
