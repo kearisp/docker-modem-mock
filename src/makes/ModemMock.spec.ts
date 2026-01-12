@@ -130,8 +130,10 @@ describe("ModemMock", () => {
         expect(containers).toEqual([]);
     });
 
-    it("should create container", async (): Promise<void> => {
+    it("should start container", async (): Promise<void> => {
         const {docker} = getContext("v1");
+
+        const beforeStart = new Date();
 
         const container = await docker.createContainer({
             name: "test.workspace",
@@ -155,6 +157,7 @@ describe("ModemMock", () => {
         expect(inspectInfo.State.Dead).toBeFalsy();
         expect(inspectInfo.State.Status).toBe("running");
         expect(inspectInfo.State.Error).toBe("");
+        expect(new Date(inspectInfo.State.StartedAt).getTime()).toBeGreaterThan(beforeStart.getTime());
 
         await container.stop();
 

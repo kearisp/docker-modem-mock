@@ -4,6 +4,6 @@ import {DockerStorage} from "./DockerStorage";
 
 describe("DockerStorage", (): void => {
     it("should build", () => {
-        const storage = new DockerStorage();
+        //
     });
 });

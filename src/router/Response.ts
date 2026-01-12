@@ -4,6 +4,14 @@ export class Response {
 
     public constructor() {}
 
+    public get statusCode(): number {
+        return this._status;
+    }
+
+    public get body(): any {
+        return this._body;
+    }
+
     public status(status: number): this {
         this._status = status;
         return this;

@@ -119,7 +119,7 @@ export class Router {
         return params;
     }
 
-    public async exec(method: HttpMethod, path: string, body: any, options: any = {}): Promise<any> {
+    public async exec(method: HttpMethod, path: string, body: any, options: any = {}): Promise<Response> {
         const url = new URL(path, "https://localhost"),
               [handler, params] = this.parseRoute(method, url.pathname);
 
@@ -138,6 +138,6 @@ export class Router {
 
         await handler(request, response);
 
-        return (response as any)._body;
+        return response;
     }
 }

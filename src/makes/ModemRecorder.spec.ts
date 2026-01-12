@@ -1,10 +1,10 @@
 import {describe, it, beforeEach, afterEach, jest, expect} from "@jest/globals";
 import {FileSystem, FileSystemDriver} from "@wocker/core";
+import {Logger} from "@kearisp/cli";
 import type Docker from "dockerode";
 import {vol} from "memfs";
 import {ModemMock} from "./ModemMock";
 import {Fixtures} from "./Fixtures";
-import {Logger} from "@kearisp/cli";
 
 
 describe("ModemRecorder", (): void => {
@@ -69,7 +69,6 @@ describe("ModemRecorder", (): void => {
     });
 
     it.each([
-        {version: "v1"},
         {version: "v1"},
         {version: "v1.48"}
     ])("should record pull", async ({version}): Promise<void> => {
