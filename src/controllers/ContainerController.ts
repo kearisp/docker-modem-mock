@@ -59,6 +59,15 @@ export class ContainerController {
     }
 
     public async create(req: Request, res: Response) {
+        const image = this.dockerStorage.getImage(req.body.Image);
+
+        if(!image) {
+            res.status(404).send({
+                message: `No such image: ${req.body.Image}`
+            });
+            return;
+        }
+
         const container: Container = {
             Id: generateId(),
             Name: `${req.body.name}`,

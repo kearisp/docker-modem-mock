@@ -70,6 +70,7 @@ describe("Router", (): void => {
         const res = await router.exec(method, path, {});
 
         expect(handler).toHaveBeenCalled();
+        expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(response);
     });
 });
