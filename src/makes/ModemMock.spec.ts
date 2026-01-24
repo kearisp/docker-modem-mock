@@ -135,9 +135,13 @@ describe("ModemMock", () => {
 
         const beforeStart = new Date();
 
+        const stream = await docker.pull("node:23");
+
+        await followStream(stream);
+
         const container = await docker.createContainer({
             name: "test.workspace",
-            Image: "oven/bun:latest"
+            Image: "node:23"
         });
 
         let inspectInfo = await container.inspect();
@@ -176,9 +180,13 @@ describe("ModemMock", () => {
     it("should rename container", async (): Promise<void> => {
         const {docker} = getContext("v1");
 
+        const stream = await docker.pull("node:23");
+
+        await followStream(stream);
+
         const container = await docker.createContainer({
             name: "test.workspace",
-            Image: "oven/bun:latest"
+            Image: "node:23"
         });
 
         await container.rename({
