@@ -163,6 +163,10 @@ describe("ModemMock", () => {
         expect(inspectInfo.State.Error).toBe("");
         expect(new Date(inspectInfo.State.StartedAt).getTime()).toBeGreaterThan(beforeStart.getTime());
 
+        const list = await docker.listContainers();
+        expect(list.length).toBe(1);
+        expect(list[0].Status).toMatch(/^Up \d+ seconds$/);
+
         await container.stop();
 
         inspectInfo = await container.inspect();
@@ -202,5 +206,179 @@ describe("ModemMock", () => {
         if(list.length === 1) {
             expect(list[0].Names).toEqual(["test-1.workspace"]);
         }
+    });
+
+    it("should list containers with different filters", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        const c1 = await docker.createContainer({
+            name: "container1",
+            Image: "node:23"
+        });
+        const c2 = await docker.createContainer({
+            name: "container2",
+            Image: "node:23"
+        });
+
+        // Initially both are stopped (created status)
+        let list = await docker.listContainers();
+        expect(list.length).toBe(0);
+
+        list = await docker.listContainers({all: true});
+        expect(list.length).toBe(2);
+
+        await c1.start();
+
+        // Now c1 is running
+        list = await docker.listContainers();
+        expect(list.length).toBe(1);
+        expect(list[0].Id).toBe(c1.id);
+
+        await c2.start();
+        list = await docker.listContainers();
+        expect(list.length).toBe(2);
+
+        await c1.stop();
+        list = await docker.listContainers();
+        expect(list.length).toBe(1);
+        expect(list[0].Id).toBe(c2.id);
+
+        list = await docker.listContainers({all: true});
+        expect(list.length).toBe(2);
+    });
+
+    it("should list containers filtered by name", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        await docker.createContainer({
+            name: "web-server",
+            Image: "node:23"
+        });
+        await docker.createContainer({
+            name: "db-server",
+            Image: "node:23"
+        });
+
+        const list = await docker.listContainers({
+            all: true,
+            filters: {
+                name: ["web-server"]
+            }
+        });
+
+        expect(list.length).toBe(1);
+        expect(list[0].Names).toContain("web-server");
+    });
+
+    it("should list containers filtered by status", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        const c1 = await docker.createContainer({
+            name: "web-server",
+            Image: "node:23"
+        });
+        await docker.createContainer({
+            name: "db-server",
+            Image: "node:23"
+        });
+
+        await c1.start();
+
+        const runningList = await docker.listContainers({
+            filters: {
+                status: ["running"]
+            }
+        });
+        expect(runningList.length).toBe(1);
+        expect(runningList[0].Names).toContain("web-server");
+
+        const createdList = await docker.listContainers({
+            all: true,
+            filters: {
+                status: ["created"]
+            }
+        });
+        expect(createdList.length).toBe(1);
+        expect(createdList[0].Names).toContain("db-server");
+    });
+
+    it("should list containers filtered by multiple names", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        await docker.createContainer({
+            name: "c1",
+            Image: "node:23"
+        });
+        await docker.createContainer({
+            name: "c2",
+            Image: "node:23"
+        });
+        await docker.createContainer({
+            name: "c3",
+            Image: "node:23"
+        });
+
+        const list = await docker.listContainers({
+            all: true,
+            filters: {
+                name: ["c1", "c3"]
+            }
+        });
+
+        expect(list.length).toBe(2);
+        const names = list.map(c => c.Names[0]);
+        expect(names).toContain("c1");
+        expect(names).toContain("c3");
+        expect(names).not.toContain("c2");
+    });
+
+    it("should list containers filtered by multiple statuses", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        const c1 = await docker.createContainer({
+            name: "c1",
+            Image: "node:23"
+        });
+        const c2 = await docker.createContainer({
+            name: "c2",
+            Image: "node:23"
+        });
+        const c3 = await docker.createContainer({
+            name: "c3",
+            Image: "node:23"
+        });
+
+        await c1.start();
+        await c2.start();
+        await c2.stop();
+
+        // c1: running, c2: exited, c3: created
+        const list = await docker.listContainers({
+            all: true,
+            filters: {
+                status: ["running", "created"]
+            }
+        });
+
+        expect(list.length).toBe(2);
+        const statuses = list.map(c => c.State);
+        expect(statuses).toContain("running");
+        expect(statuses).toContain("created");
+        expect(statuses).not.toContain("exited");
     });
 });

@@ -27,23 +27,53 @@ export class ContainerController {
     public async list(req: Request, res: Response) {
         const {
             all,
-            filters: {
-                name
-            } = {}
+            filters = {}
         } = req.body;
+
+        const nameFilters = filters.name ? (Array.isArray(filters.name) ? filters.name : [filters.name]) : null;
+        const statusFilters = filters.status ? (Array.isArray(filters.status) ? filters.status : [filters.status]) : null;
 
         res.status(200).send(
             this.dockerStorage.containers.filter((container) => {
+                if(nameFilters) {
+                    const normalizedName = container.Name.startsWith("/")
+                        ? container.Name.substring(1)
+                        : container.Name;
+
+                    if(!nameFilters.includes(normalizedName)) {
+                        return false;
+                    }
+                }
+
+                if(statusFilters && !statusFilters.includes(container.State.Status)) {
+                    return false;
+                }
+
                 if(all) {
                     return true;
                 }
 
-                if(name && container.Name === `/${name}`) {
-
-                }
-
                 return container.State.Running;
             }).map((container) => {
+                let status = container.State.Status as string;
+
+                if(container.State.Running && container.State.StartedAt) {
+                    const diff = Math.floor((new Date().getTime() - container.State.StartedAt.getTime()) / 1000);
+
+                    if(diff < 60) {
+                        status = `Up ${diff} seconds`;
+                    }
+                    else if(diff < 3600) {
+                        status = `Up ${Math.floor(diff / 60)} minutes`;
+                    }
+                    else if(diff < 86400) {
+                        status = `Up ${Math.floor(diff / 3600)} hours`;
+                    }
+                    else {
+                        status = `Up ${Math.floor(diff / 86400)} days`;
+                    }
+                }
+
                 return {
                     Id: container.Id,
                     Names: [container.Name],
@@ -51,7 +81,7 @@ export class ContainerController {
                     ImageID: "",
                     Created: container.Created,
                     State: container.State.Status,
-                    Status: "Up 1 seconds",
+                    Status: status,
                     Ports: []
                 };
             })
@@ -71,7 +101,7 @@ export class ContainerController {
         const container: Container = {
             Id: generateId(),
             Name: `${req.body.name}`,
-            Image: req.body.Image,
+            Image: image.Id,
             State: {
                 Running: false,
                 Paused: false,
