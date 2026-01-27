@@ -2,7 +2,7 @@
     "name": "docker-modem-mock",
     "description": "A mock implementation of docker-modem for testing purposes",
     "type": "commonjs",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "license": "MIT",
     "main": "./lib/index.js",
