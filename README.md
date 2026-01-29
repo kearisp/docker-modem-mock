@@ -1,5 +1,13 @@
 # docker-modem-mock
 
+[![npm version](https://img.shields.io/npm/v/docker-modem-mock.svg)](https://www.npmjs.com/package/docker-modem-mock)
+[![Publish](https://github.com/kearisp/docker-modem-mock/actions/workflows/publish-latest.yml/badge.svg?event=release)](https://github.com/kearisp/docker-modem-mock/actions/workflows/publish-latest.yml)
+[![License](https://img.shields.io/npm/l/docker-modem-mock)](https://github.com/kearisp/docker-modem-mock/blob/master/LICENSE)
+
+[![npm total downloads](https://img.shields.io/npm/dt/docker-modem-mock.svg)](https://www.npmjs.com/package/docker-modem-mock)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/docker-modem-mock)](https://bundlephobia.com/package/docker-modem-mock)
+![Coverage](https://gist.githubusercontent.com/kearisp/f17f46c6332ea3bb043f27b0bddefa9f/raw/coverage-docker-modem-mock-latest.svg)
+
 A mock implementation of `docker-modem` for testing purposes. This package allows you to mock Docker API calls in your tests when your code interacts with Docker (e.g., creating containers), but you don't need a real Docker daemon or to test the actual container contents.
 
 ## Features
@@ -87,7 +95,7 @@ Inherits from `Modem`.
 ### `Fixtures`
 
 - `static fromPath(path: string)`: Creates a `Fixtures` instance from a filesystem path.
-- `static fromFS(fs: FileSystem)`: Creates a `Fixtures` instance from a `@wocker/core` FileSystem.
+- `static fromFS(fs: FileSystem)`: Creates a `Fixtures` instance from a `docker-modem-mock` FileSystem.
 
 ## License
 

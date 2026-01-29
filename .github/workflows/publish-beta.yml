@@ -54,6 +54,11 @@ jobs:
                 gist_token: ${{ secrets.GIST_TOKEN }}
                 gist_id: ${{ secrets.GIST_ID }}
 
+          - name: Setup readme
+            uses: ./.github/actions/setup-readme
+            with:
+                branch_name: ${{ github.head_ref || github.ref }}
+
           - name: Publish beta to NPM
             if: ${{ github.repository_owner == 'kearisp' }}
             shell: bash
