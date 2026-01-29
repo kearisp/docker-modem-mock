@@ -381,4 +381,33 @@ describe("ModemMock", () => {
         expect(statuses).toContain("created");
         expect(statuses).not.toContain("exited");
     });
+
+    it("should create two containers and remove one", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        const c1 = await docker.createContainer({
+            name: "container-1",
+            Image: "node:23"
+        });
+
+        const c2 = await docker.createContainer({
+            name: "container-2",
+            Image: "node:23"
+        });
+
+        let list = await docker.listContainers({all: true});
+        expect(list.length).toBe(2);
+
+        await c1.remove();
+
+        list = await docker.listContainers({all: true});
+        expect(list.length).toBe(1);
+        expect(list[0].Names).toContain("container-2");
+        expect(list[0].Id).toBe(c2.id);
+
+        await expect(docker.getContainer(c1.id).inspect()).rejects.toThrow();
+    });
 });

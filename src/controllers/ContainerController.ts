@@ -496,7 +496,7 @@ export class ContainerController {
 
     public async delete(req: Request, res: Response) {
         this.dockerStorage.containers = this.dockerStorage.containers.filter((container) => {
-            return container.Id === req.params.id;
+            return container.Id !== req.params.id;
         });
 
         res.status(200).send({});
