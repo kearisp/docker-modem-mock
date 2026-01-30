@@ -212,8 +212,6 @@ export class ImageController {
 
         const stream = fixture.build(version, builderVersion, imageName, imageTag);
 
-        // Logger.info("1 >", version, builderVersion, imageName, imageTag);
-
         stream.on("end", (): void => {
             let image = this.dockerStorage.images.find((image) => {
                 return image.RepoTags.includes(`${imageName}:${imageTag}`);
