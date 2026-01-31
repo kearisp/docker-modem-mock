@@ -81,6 +81,39 @@ The mock relies on a specific directory structure for fixtures:
 - `records/{version}/pull/{imageName}/{tag}.jsonl`: JSONL file containing streaming output for image pull.
 - `records/{version}/build-{builderVersion}/{imageName}/{tag}.jsonl`: JSONL file containing streaming output for image build.
 
+## Fixtures recorder
+
+Currently, fixtures must be recorded manually; a dedicated command for this will be created in the future.
+
+For now, you can use the following script for this purpose:
+
+```typescript
+import Docker from "dockerode";
+import { ModemRecorder, Fixtures } from "docker-modem-mock";
+import Path from "path";
+
+const docker = new Docker({
+    modem: new ModemRecorder({
+        recordFixtures: Fixtures.fromPath(Path.resolve("./your-fixtures-dir")),
+        // Docker modem setting:
+        socketPath: "/var/run/docker.sock"
+    })
+});
+
+const image = docker.getImage("node:23");
+
+await image.remove().catch(() => undefined);
+
+const stream = await docker.pull("node:23");
+
+stream.on("data", (chunk) => process.stdout.write(chunk.toString()));
+stream.on("end", async () => {
+    console.log(await image.inspect());
+});
+```
+
+This script will record the pull response for the image to the `your-fixtures-dir/records/v1/pull/node/23.jsonl` file.
+
 ## API
 
 ### `ModemMock`
