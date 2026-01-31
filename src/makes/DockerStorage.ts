@@ -19,6 +19,10 @@ export class DockerStorage {
         this.containers.push(container);
     }
 
+    public getImageById(id: string) {
+        return this.images.find(image => image.Id === id);
+    }
+
     public getImage(tag: string) {
         return this.images.find((image) => {
             return image.RepoTags.includes(tag);
