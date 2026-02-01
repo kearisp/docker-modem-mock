@@ -109,6 +109,9 @@ export class ContainerController {
                 Status: ContainerStatus.CREATED,
                 Error: ""
             },
+            HostConfig: {
+                ConsoleSize: [0, 0]
+            },
             Created: new Date()
         };
 
@@ -213,6 +216,11 @@ export class ContainerController {
             return;
         }
 
+        const h = parseInt(req.body.h as string);
+        const w = parseInt(req.body.w as string);
+
+        container.HostConfig.ConsoleSize = [h, w];
+
         res.status(200).send({});
     }
 
@@ -294,6 +302,15 @@ export class ContainerController {
             return;
         }
 
+        const image = this.dockerStorage.getImageById(container.Image);
+
+        if(!image) {
+            res.status(500).send({
+                message: `Image ${container.Image} not found`
+            });
+            return;
+        }
+
         res.status(200).send({
             Id: container.Id,
             Name: container.Name,
@@ -313,7 +330,7 @@ export class ContainerController {
                 StartedAt: container.State.StartedAt ? container.State.StartedAt.toISOString() : "0001-01-01T00:00:00Z",
                 FinishedAt: container.State.FinishedAt ? container.State.FinishedAt.toISOString() : "0001-01-01T00:00:00Z"
             },
-            Image: "sha256:3476c857e7c05a7950b3a8a684ffbc82f5cbeffe1b523ea1a92bdefc4539dc57",
+            Image: image.Id,
             ResolvConfPath: "",
             HostnamePath: "",
             HostsPath: "",
@@ -341,7 +358,7 @@ export class ContainerController {
                 AutoRemove:false,
                 VolumeDriver: "",
                 VolumesFrom: null,
-                ConsoleSize: [0,0],
+                ConsoleSize: container.HostConfig.ConsoleSize,
                 CapAdd: null,
                 CapDrop: null,
                 CgroupnsMode: "host",

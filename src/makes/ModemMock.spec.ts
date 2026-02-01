@@ -410,4 +410,24 @@ describe("ModemMock", () => {
 
         await expect(docker.getContainer(c1.id).inspect()).rejects.toThrow();
     });
+
+    it("should resize container", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const stream = await docker.pull("node:23");
+        await followStream(stream);
+
+        const container = await docker.createContainer({
+            name: "test-resize",
+            Image: "node:23"
+        });
+
+        await container.resize({
+            h: 40,
+            w: 80
+        });
+
+        const inspect = await container.inspect();
+        expect(inspect.HostConfig.ConsoleSize).toEqual([40, 80]);
+    });
 });

@@ -14,5 +14,8 @@ export type Container = {
         FinishedAt?: Date;
         Error: string;
     };
+    HostConfig: {
+        ConsoleSize: [number, number];
+    };
     Created: Date;
 };
