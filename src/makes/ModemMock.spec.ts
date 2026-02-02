@@ -204,7 +204,7 @@ describe("ModemMock", () => {
         expect(list.length).toBe(1);
 
         if(list.length === 1) {
-            expect(list[0].Names).toEqual(["test-1.workspace"]);
+            expect(list[0].Names).toEqual(["/test-1.workspace"]);
         }
     });
 
@@ -273,7 +273,7 @@ describe("ModemMock", () => {
         });
 
         expect(list.length).toBe(1);
-        expect(list[0].Names).toContain("web-server");
+        expect(list[0].Names).toContain("/web-server");
     });
 
     it("should list containers filtered by status", async (): Promise<void> => {
@@ -299,7 +299,7 @@ describe("ModemMock", () => {
             }
         });
         expect(runningList.length).toBe(1);
-        expect(runningList[0].Names).toContain("web-server");
+        expect(runningList[0].Names).toContain("/web-server");
 
         const createdList = await docker.listContainers({
             all: true,
@@ -308,7 +308,7 @@ describe("ModemMock", () => {
             }
         });
         expect(createdList.length).toBe(1);
-        expect(createdList[0].Names).toContain("db-server");
+        expect(createdList[0].Names).toContain("/db-server");
     });
 
     it("should list containers filtered by multiple names", async (): Promise<void> => {
@@ -339,9 +339,9 @@ describe("ModemMock", () => {
 
         expect(list.length).toBe(2);
         const names = list.map(c => c.Names[0]);
-        expect(names).toContain("c1");
-        expect(names).toContain("c3");
-        expect(names).not.toContain("c2");
+        expect(names).toContain("/c1");
+        expect(names).toContain("/c3");
+        expect(names).not.toContain("/c2");
     });
 
     it("should list containers filtered by multiple statuses", async (): Promise<void> => {
@@ -405,7 +405,7 @@ describe("ModemMock", () => {
 
         list = await docker.listContainers({all: true});
         expect(list.length).toBe(1);
-        expect(list[0].Names).toContain("container-2");
+        expect(list[0].Names).toContain("/container-2");
         expect(list[0].Id).toBe(c2.id);
 
         await expect(docker.getContainer(c1.id).inspect()).rejects.toThrow();
