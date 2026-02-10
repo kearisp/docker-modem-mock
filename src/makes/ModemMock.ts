@@ -20,8 +20,8 @@ type Options = ConstructorOptions & {
 
 export class ModemMock extends Modem {
     protected readonly mockRouter: Router;
-    protected storage: DockerStorage;
-    protected version!: string;
+    protected readonly storage: DockerStorage;
+    protected readonly version!: string;
 
     public constructor({mockFixtures, ...rest}: Options) {
         super(rest);

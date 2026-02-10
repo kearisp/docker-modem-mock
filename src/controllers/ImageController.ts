@@ -1,6 +1,6 @@
+import {Logger} from "@kearisp/cli";
 import {Router, Request, Response} from "../router";
 import {DockerStorage} from "../makes/DockerStorage";
-import {Logger} from "@kearisp/cli";
 
 export class ImageController {
     public constructor(

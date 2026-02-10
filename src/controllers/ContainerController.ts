@@ -76,7 +76,7 @@ export class ContainerController {
 
                 return {
                     Id: container.Id,
-                    Names: [container.Name],
+                    Names: [`/${container.Name}`],
                     Image: container.Image,
                     ImageID: "",
                     Created: container.Created,
@@ -313,7 +313,7 @@ export class ContainerController {
 
         res.status(200).send({
             Id: container.Id,
-            Name: container.Name,
+            Name: `/${container.Name}`,
             Created: container.Created.toISOString(),
             Path: "/usr/local/bin/docker-entrypoint.sh",
             Args: ["/usr/local/bin/bun"],
