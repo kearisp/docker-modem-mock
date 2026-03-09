@@ -6,45 +6,24 @@
     "RepoDigests": [
         "node@sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544"
     ],
-    "Parent": "",
     "Comment": "buildkit.dockerfile.v0",
     "Created": "2025-05-15T06:41:20Z",
-    "DockerVersion": "",
-    "Author": "",
     "Config": {
-        "Hostname": "",
-        "Domainname": "",
-        "User": "",
-        "AttachStdin": false,
-        "AttachStdout": false,
-        "AttachStderr": false,
-        "Tty": false,
-        "OpenStdin": false,
-        "StdinOnce": false,
         "Env": [
             "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
             "NODE_VERSION=23.11.1",
             "YARN_VERSION=1.22.22"
         ],
-        "Cmd": [
-            "node"
-        ],
-        "Image": "",
-        "Volumes": null,
-        "WorkingDir": "",
         "Entrypoint": [
             "docker-entrypoint.sh"
         ],
-        "OnBuild": null,
-        "Labels": null
+        "Cmd": [
+            "node"
+        ]
     },
     "Architecture": "amd64",
     "Os": "linux",
     "Size": 406954662,
-    "GraphDriver": {
-        "Data": null,
-        "Name": "overlayfs"
-    },
     "RootFS": {
         "Type": "layers",
         "Layers": [
@@ -59,11 +38,18 @@
         ]
     },
     "Metadata": {
-        "LastTagTime": "2025-05-23T21:38:08.14111064Z"
+        "LastTagTime": "2026-03-09T18:57:40.357486545Z"
     },
     "Descriptor": {
         "mediaType": "application/vnd.oci.image.index.v1+json",
         "digest": "sha256:9a25b5a6f9a90218b73a62205f111e71de5e4289aee952b4dd7e86f7498f2544",
         "size": 6410
+    },
+    "Identity": {
+        "Pull": [
+            {
+                "Repository": "docker.io/library/node"
+            }
+        ]
     }
 }

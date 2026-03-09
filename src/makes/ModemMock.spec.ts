@@ -3,6 +3,7 @@ import {FileSystem} from "@wocker/core";
 import {Logger} from "@kearisp/cli";
 import Docker from "dockerode";
 import {ModemMock} from "./ModemMock";
+import {ModemRecorder} from "./ModemRecorder";
 import {Fixtures} from "./Fixtures";
 
 
@@ -16,12 +17,22 @@ describe("ModemMock", () => {
             version: version === "v1" ? undefined : version
         });
 
+        const modemRecorder = new ModemRecorder({
+            recordFixtures: fixtures,
+            version: version === "v1" ? undefined : version
+        });
+
         const docker = new Docker({
             // @ts-ignore
             modem
         });
 
-        return {docker};
+        const dockerRecorder = new Docker({
+            // @ts-ignore
+            modem: modemRecorder
+        });
+
+        return {docker, dockerRecorder};
     };
 
     const followStream = async (stream: NodeJS.ReadableStream, log?: boolean): Promise<void> => {
@@ -106,6 +117,96 @@ describe("ModemMock", () => {
 
         expect(images.length).toBe(1);
         expect(images[0].RepoTags).toEqual(["node:23"]);
+    });
+
+    it("should retrieve filtered list of images", async () => {
+        const {
+            docker
+            // dockerRecorder: docker
+        } = getContext("v1");
+
+        await followStream(await docker.pull("node:22"));
+        await followStream(await docker.pull("node:23"));
+        await followStream(await docker.pull("node:24"));
+        await followStream(await docker.pull("node:25"));
+
+        const images = await docker.listImages({
+            // all: true,
+            filters: {
+                reference: ["node:22"]
+            }
+        });
+
+        console.log(images.map(i => i.RepoTags![0]));
+
+        expect(images.length).toBe(1);
+        expect(images[0].RepoTags).toContain("node:22");
+
+        const imagesWildcard = await docker.listImages({
+            filters: {
+                reference: ["node:*"]
+            }
+        });
+
+        expect(imagesWildcard.length).toBe(4);
+
+        // Test "before" filter
+        // node:22 - 2026-03-05
+        // node:23 - 2025-05-15
+        // node:24 - 2026-02-24
+        // node:25 - 2026-03-03
+        // Order: 23 (2025-05) < 24 (2026-02) < 25 (2026-03-03) < 22 (2026-03-05)
+        const imagesBefore = await docker.listImages({
+            filters: {
+                before: ["node:25"]
+            }
+        });
+
+        // node:23 and node:24 are before node:25
+        expect(imagesBefore.length).toBe(2);
+        const tagsBefore = imagesBefore.map(i => i.RepoTags![0]);
+        expect(tagsBefore).toContain("node:23");
+        expect(tagsBefore).toContain("node:24");
+
+        // Test "since" filter
+        const imagesSince = await docker.listImages({
+            filters: {
+                since: ["node:25"]
+            }
+        });
+
+        // node:22 is after node:25
+        expect(imagesSince.length).toBe(1);
+        expect(imagesSince[0].RepoTags).toContain("node:22");
+
+        // Test "until" filter
+        const imagesUntil = await docker.listImages({
+            filters: {
+                until: ["2026-01-01"]
+            }
+        });
+
+        // Only node:23 (2025-05) is before 2026
+        expect(imagesUntil.length).toBe(1);
+        expect(imagesUntil[0].RepoTags).toContain("node:23");
+
+        // Test "dangling" filter
+        const imagesDangling = await docker.listImages({
+            filters: {
+                dangling: ["false"]
+            }
+        });
+
+        // All pulled images have tags
+        expect(imagesDangling.length).toBe(4);
+
+        const imagesDanglingTrue = await docker.listImages({
+            filters: {
+                dangling: ["true"]
+            }
+        });
+
+        expect(imagesDanglingTrue.length).toBe(0);
     });
 
     it("should throw error when inspecting non-existent image", async (): Promise<void> => {
