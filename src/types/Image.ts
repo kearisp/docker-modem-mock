@@ -5,4 +5,5 @@ export type Image = {
     Labels: {
         [name: string]: string;
     };
+    Created: number;
 };

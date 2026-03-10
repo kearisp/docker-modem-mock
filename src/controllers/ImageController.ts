@@ -15,18 +15,8 @@ export class ImageController {
     }
 
     public async list(req: Request, res: Response) {
-        if(Object.keys(req.body).length > 0) {
-            // TODO
-            Logger.warn("imageList(", req.body, ")");
-
-            res.status(200).send([]);
-            return;
-        }
-
-        const images = [];
-
-        for(const image of this.dockerStorage.images) {
-            images.push({
+        const images = this.dockerStorage.getImages(req.body).map((image) => {
+            return {
                 Containers: -1,
                 Created: 1747579856,
                 Id: image.Id,
@@ -43,8 +33,8 @@ export class ImageController {
                 RepoTags: image.RepoTags,
                 SharedSize: -1,
                 Size: 746947017
-            });
-        }
+            };
+        });
 
         res.status(200).send(images);
     }
@@ -177,6 +167,7 @@ export class ImageController {
                 return null;
             }
 
+            image.Created = new Date(image.Created).getTime();
             this.dockerStorage.addImage(image);
         });
 
@@ -222,6 +213,7 @@ export class ImageController {
             }
 
             if(image) {
+                image.Created = new Date(image.Created).getTime();
                 this.dockerStorage.addImage(image);
             }
         });

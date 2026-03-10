@@ -1,0 +1,126 @@
+{"status":"Pulling from library/node","id":"25"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"5e26477e8eb5"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"d3fcf5f9f6f5"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"f6226f2a878d"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":16089775},"id":"051f577ce67b"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"235374eff093"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":16089775},"id":"051f577ce67b"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"f6226f2a878d"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":16089775},"id":"051f577ce67b"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"5e26477e8eb5"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"f6226f2a878d"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":1250677},"id":"d3fcf5f9f6f5"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":57679278},"id":"279506d975b3"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"d3fcf5f9f6f5"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":12582912,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":13631488,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":14680064,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":14680064,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":16089775,"total":16089775},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":57679278},"id":"279506d975b3"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"051f577ce67b"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":12582912,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":13631488,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":14680064,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":15728640,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":16777216,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":18874368,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":19922944,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":20971520,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":22020096,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":23068672,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":24117248,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":25165824,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":26214400,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":27262976,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":28311552,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":29360128,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":30408704,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":31457280,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":32505856,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":33554432,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":34603008,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":35651584,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":37748736,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":37748736,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":39845888,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":40894464,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":41943040,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":42991616,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":44040192,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":45088768,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":46137344,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":47185920,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":48234496,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":49283072,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":50331648,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":51380224,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":52428800,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":53477376,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":54525952,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":56623104,"total":57679278},"id":"279506d975b3"}
+{"status":"Downloading","progressDetail":{"current":56623104,"total":57679278},"id":"279506d975b3"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"279506d975b3"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"279506d975b3"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"5e26477e8eb5"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"d3fcf5f9f6f5"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"279506d975b3"}
+{"status":"Digest: sha256:508d817af6ec83e38d24a3d7da7da34b7119085c1d213abf0b7a3fab5dac5bf1"}
+{"status":"Status: Downloaded newer image for node:25"}
