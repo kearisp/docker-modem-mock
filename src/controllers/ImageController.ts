@@ -168,6 +168,7 @@ export class ImageController {
             }
 
             image.Created = new Date(image.Created).getTime();
+
             this.dockerStorage.addImage(image);
         });
 

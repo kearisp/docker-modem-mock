@@ -17,5 +17,11 @@ export type Container = {
     HostConfig: {
         ConsoleSize: [number, number];
     };
+    Config: {
+        Image: string;
+        Labels: {
+            [key: string]: string;
+        };
+    };
     Created: Date;
 };

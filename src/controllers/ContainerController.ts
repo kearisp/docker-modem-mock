@@ -25,36 +25,8 @@ export class ContainerController {
     }
 
     public async list(req: Request, res: Response) {
-        const {
-            all,
-            filters = {}
-        } = req.body;
-
-        const nameFilters = filters.name ? (Array.isArray(filters.name) ? filters.name : [filters.name]) : null;
-        const statusFilters = filters.status ? (Array.isArray(filters.status) ? filters.status : [filters.status]) : null;
-
         res.status(200).send(
-            this.dockerStorage.containers.filter((container) => {
-                if(nameFilters) {
-                    const normalizedName = container.Name.startsWith("/")
-                        ? container.Name.substring(1)
-                        : container.Name;
-
-                    if(!nameFilters.includes(normalizedName)) {
-                        return false;
-                    }
-                }
-
-                if(statusFilters && !statusFilters.includes(container.State.Status)) {
-                    return false;
-                }
-
-                if(all) {
-                    return true;
-                }
-
-                return container.State.Running;
-            }).map((container) => {
+            this.dockerStorage.listContainer(req.body).map((container) => {
                 let status = container.State.Status as string;
 
                 if(container.State.Running && container.State.StartedAt) {
@@ -82,14 +54,20 @@ export class ContainerController {
                     Created: container.Created,
                     State: container.State.Status,
                     Status: status,
-                    Ports: []
+                    Ports: [],
+                    Labels: container.Config.Labels || {}
                 };
             })
         );
     }
 
     public async create(req: Request, res: Response) {
-        const image = this.dockerStorage.getImage(req.body.Image);
+        const {
+            Image: imageName,
+            Labels = {}
+        } = req.body;
+
+        const image = this.dockerStorage.getImage(imageName);
 
         if(!image) {
             res.status(404).send({
@@ -112,7 +90,14 @@ export class ContainerController {
             HostConfig: {
                 ConsoleSize: [0, 0]
             },
-            Created: new Date()
+            Created: new Date(),
+            Config: {
+                Image: imageName,
+                Labels: {
+                    ...image.Config.Labels || {},
+                    ...Labels
+                }
+            }
         };
 
         this.dockerStorage.addContainer(container);
@@ -449,17 +434,7 @@ export class ContainerController {
                     "/usr/local/bin/docker-entrypoint.sh"
                 ],
                 OnBuild: null,
-                Labels: {
-                    "desktop.docker.io/wsl-distro":"Ubuntu",
-                    "org.opencontainers.image.created": "2025-05-10T14:05:09.084Z",
-                    "org.opencontainers.image.description":"Incredibly fast JavaScript runtime, bundler, test runner, and package manager – all in one",
-                    "org.opencontainers.image.licenses":"NOASSERTION",
-                    "org.opencontainers.image.revision":"64ed68c9e0faa7f5224876be8681d2bdc311454b",
-                    "org.opencontainers.image.source": "https://github.com/oven-sh/bun",
-                    "org.opencontainers.image.title":"bun",
-                    "org.opencontainers.image.url": "https://github.com/oven-sh/bun",
-                    "org.opencontainers.image.version":"1.2.13-alpine"
-                }
+                Labels: container.Config.Labels || {}
             },
             NetworkSettings: {
                 Bridge: "",

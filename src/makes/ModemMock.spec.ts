@@ -483,6 +483,112 @@ describe("ModemMock", () => {
         expect(statuses).not.toContain("exited");
     });
 
+    it("should list containers filtered by label", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        const c0 = await docker.createContainer({
+            name: "c0",
+            Image: "node:23"
+        });
+
+        const c1 = await docker.createContainer({
+            name: "c1",
+            Image: "node:23",
+            Labels: {
+                "test": "c1",
+                "test.c1": "true"
+            }
+        });
+
+        const c2 = await docker.createContainer({
+            name: "c2",
+            Image: "node:23",
+            Labels: {
+                "test": "c2",
+                "test.c2": "true"
+            }
+        });
+
+        const c0Info = await c0.inspect(),
+              c1Info = await c1.inspect(),
+              c2Info = await c2.inspect();
+
+        expect(c0Info.Config.Labels).not.toHaveProperty("test");
+        expect(c0Info.Config.Labels).not.toHaveProperty("test.c1");
+        expect(c0Info.Config.Labels).not.toHaveProperty("test.c2");
+
+        expect(c1Info.Config.Labels).toEqual(
+            expect.objectContaining({
+                "test": "c1",
+                "test.c1": "true"
+            })
+        );
+
+        expect(c2Info.Config.Labels).toEqual(
+            expect.objectContaining({
+                "test": "c2",
+                "test.c2": "true"
+            })
+        );
+
+        const list1 = await docker.listContainers({
+            all: true,
+            filters: {
+                label: ["test"]
+            }
+        });
+
+        expect(list1.length).toBe(2);
+        expect(list1).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    Labels: expect.objectContaining({
+                        "test": "c1",
+                        "test.c1": "true"
+                    })
+                }),
+                expect.objectContaining({
+                    Labels: expect.objectContaining({
+                        "test": "c2",
+                        "test.c2": "true"
+                    })
+                })
+            ])
+        );
+
+        const list2 = await docker.listContainers({
+            all: true,
+            filters: {
+                label: ["test=c1"]
+            }
+        });
+
+        expect(list2.length).toBe(1);
+        expect(list2[0].Labels).toEqual(
+            expect.objectContaining({
+                "test": "c1",
+                "test.c1": "true"
+            })
+        );
+
+        const list3 = await docker.listContainers({
+            all: true,
+            filters: {
+                label: ["test", "test.c2=true"]
+            }
+        });
+
+        expect(list3.length).toBe(1);
+        expect(list3[0].Labels).toEqual(
+            expect.objectContaining({
+                "test": "c2",
+                "test.c2": "true"
+            })
+        );
+    });
+
     it("should create two containers and remove one", async (): Promise<void> => {
         const {docker} = getContext("v1");
 
