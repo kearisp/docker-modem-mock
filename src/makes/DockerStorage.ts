@@ -9,6 +9,65 @@ export class DockerStorage {
     public images: Image[] = [];
     public fixtures: Fixtures[] = [];
 
+    public listContainer(options: DockerService.ListContainerOptions = {}) {
+        const {
+            all,
+            filters: {
+                name: nameFilters,
+                status: statusFilters,
+                label: labels
+            } = {}
+        } = options;
+
+        return this.containers.filter((container) => {
+            if(nameFilters) {
+                const normalizedName = container.Name.startsWith("/")
+                    ? container.Name.substring(1)
+                    : container.Name;
+
+                if(!nameFilters.includes(normalizedName)) {
+                    return false;
+                }
+            }
+
+            if(statusFilters && !statusFilters.includes(container.State.Status)) {
+                return false;
+            }
+
+            if(labels) {
+                const hasLabel = labels.reduce((res, label) => {
+                    if(!res) {
+                        return res;
+                    }
+
+                    const [key, value] = label.split("=");
+
+                    if(!container.Config.Labels[key]) {
+                        return false;
+                    }
+
+                    if(value && container.Config.Labels[key] !== value) {
+                        return false;
+                    }
+
+                    // console.log(key, value);
+
+                    return res;
+                }, true);
+
+                if(!hasLabel) {
+                    return false;
+                }
+            }
+
+            if(all) {
+                return true;
+            }
+
+            return container.State.Running;
+        });
+    }
+
     public getContainer(id: string) {
         return this.containers.find((container) => {
             return container.Id === id;
@@ -174,6 +233,15 @@ export class DockerStorage {
 }
 
 export namespace DockerService {
+    export type ListContainerOptions = {
+        all?: boolean;
+        filters?: {
+            name?: string[];
+            status?: string[];
+            label?: string[];
+        };
+    };
+
     export type ImagesOptions = {
         all?: boolean;
         digests?: boolean;

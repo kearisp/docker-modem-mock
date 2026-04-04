@@ -16,6 +16,7 @@ A mock implementation of `docker-modem` for testing purposes. This package allow
 - **Container Lifecycle**: Creating, starting, stopping, listing, and inspecting containers.
 - **Fixture-based Responses**: Use pre-recorded or custom fixtures to simulate Docker API responses for complex operations like `pull` and `build`.
 - **Dockerode Integration**: Seamlessly works with `dockerode` by replacing its underlying modem.
+- **Mock Support**: Detailed list of supported Docker API methods can be found in [MOCK_SUPPORT.md](https://github.com/kearisp/docker-modem-mock/blob/master/MOCK_SUPPORT.md).
 
 ## Installation
 

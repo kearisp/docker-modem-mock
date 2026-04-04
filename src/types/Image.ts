@@ -6,4 +6,9 @@ export type Image = {
         [name: string]: string;
     };
     Created: number;
+    Config: {
+        Labels: {
+            [key: string]: string;
+        };
+    };
 };

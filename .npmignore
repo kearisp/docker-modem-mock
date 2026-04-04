@@ -31,3 +31,6 @@ jspm_packages/
 
 # Development tools
 /.github
+
+# Docs
+/MOCK_SUPPORT.md
