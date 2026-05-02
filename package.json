@@ -2,7 +2,7 @@
     "name": "docker-modem-mock",
     "description": "A mock implementation of docker-modem for testing purposes",
     "type": "commonjs",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "license": "MIT",
     "main": "./lib/index.js",
@@ -27,7 +27,7 @@
         "make-coverage-badge": "make-coverage-badge"
     },
     "peerDependencies": {
-        "docker-modem": "^5.0.6"
+        "docker-modem": "^5.0.7"
     },
     "dependencies": {
         "@wocker/core": "^1.0.27"
@@ -36,8 +36,8 @@
         "@types/dockerode": "^3.3.47",
         "@types/jest": "^30.0.0",
         "@types/node": "^25.0.2",
-        "docker-modem": "^5.0.6",
-        "dockerode": "^4.0.9",
+        "docker-modem": "^5.0.7",
+        "dockerode": "^5.0.0",
         "jest": "^30.2.0",
         "make-coverage-badge": "^1.2.0",
         "memfs": "^4.51.1",
