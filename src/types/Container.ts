@@ -1,4 +1,5 @@
 import {ContainerStatus} from "./ContainerStatus";
+import {EndpointSettings} from "./EndpointSettings";
 
 
 export type Container = {
@@ -16,11 +17,17 @@ export type Container = {
     };
     HostConfig: {
         ConsoleSize: [number, number];
+        NetworkMode: string;
     };
     Config: {
         Image: string;
         Labels: {
             [key: string]: string;
+        };
+    };
+    NetworkSettings: {
+        Networks: {
+            [name: string]: EndpointSettings;
         };
     };
     Created: Date;

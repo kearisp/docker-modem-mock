@@ -221,6 +221,97 @@ describe("ModemMock", () => {
         await expect(docker.getContainer("not-exists").inspect()).rejects.toThrow();
     });
 
+    it("should create a network and inspect it", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        const network = await docker.createNetwork({
+            Name: "test-net",
+            Driver: "bridge"
+        });
+
+        expect(network.id).toBeTruthy();
+
+        const inspectInfo = await docker.getNetwork(network.id).inspect();
+
+        expect(inspectInfo.Id).toBe(network.id);
+        expect(inspectInfo.Name).toBe("test-net");
+        expect(inspectInfo.Driver).toBe("bridge");
+
+        const networks = await docker.listNetworks();
+
+        expect(networks.map((network) => network.Name)).toContain("test-net");
+    });
+
+    it("should create a container attached to a custom network", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        const network = await docker.createNetwork({
+            Name: "custom-net"
+        });
+
+        const container = await docker.createContainer({
+            name: "network.workspace",
+            Image: "node:23",
+            HostConfig: {
+                NetworkMode: "custom-net"
+            }
+        });
+
+        const inspectInfo = await container.inspect();
+
+        expect(inspectInfo.HostConfig.NetworkMode).toBe("custom-net");
+        expect(inspectInfo.NetworkSettings.Networks).toHaveProperty("custom-net");
+        expect(inspectInfo.NetworkSettings.Networks["custom-net"].NetworkID).toBe(network.id);
+
+        await container.remove();
+    });
+
+    it("should default to the bridge network when none is specified", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        const container = await docker.createContainer({
+            name: "default-network.workspace",
+            Image: "node:23"
+        });
+
+        const inspectInfo = await container.inspect();
+
+        expect(inspectInfo.HostConfig.NetworkMode).toBe("bridge");
+        expect(inspectInfo.NetworkSettings.Networks).toHaveProperty("bridge");
+        expect(inspectInfo.NetworkSettings.Networks.bridge.NetworkID).toBeTruthy();
+
+        await container.remove();
+    });
+
+    it("should throw the same error Docker returns when creating a container with a non-existent network", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        let thrown: any;
+
+        try {
+            await docker.createContainer({
+                name: "missing-network.workspace",
+                Image: "node:23",
+                HostConfig: {
+                    NetworkMode: "does-not-exist"
+                }
+            });
+        }
+        catch(err) {
+            thrown = err;
+        }
+
+        expect(thrown).toBeDefined();
+        expect(thrown.statusCode).toBe(404);
+        expect(thrown.json.message).toBe("network does-not-exist not found");
+    });
+
     it("should get empty containers list", async (): Promise<void> => {
         const {docker} = getContext("v1");
 

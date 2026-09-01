@@ -4,30 +4,30 @@ This document lists all Docker API methods and parameters that can be mocked usi
 
 ## Containers
 
-| Method                   | Endpoint                        | Supported Parameters                      | Support Level |
-|:-------------------------|:--------------------------------|:------------------------------------------|:-------------:|
-| **List Containers**      | `GET /containers/json`          | `all`, `filters` (name, status, label)    |    🟢 80%     |
-| **Create Container**     | `POST /containers/create`       | `Image`, `Labels`, `name` (query)         |    🟡 60%     |
-| **Inspect Container**    | `GET /containers/{id}/json`     | `id`                                      |    🟢 90%     |
-| **Start Container**      | `POST /containers/{id}/start`   | `id`                                      |    🟢 100%    |
-| **Stop Container**       | `POST /containers/{id}/stop`    | `id`, `t`                                 |    🟢 100%    |
-| **Restart Container**    | `POST /containers/{id}/restart` | `id`, `t`                                 |    🟢 100%    |
-| **Rename Container**     | `POST /containers/{id}/rename`  | `id`, `name` (query)                      |    🟢 100%    |
-| **Resize Container TTY** | `POST /containers/{id}/resize`  | `id`, `h`, `w`                            |    🟢 100%    |
-| **Kill Container**       | `POST /containers/{id}/kill`    | `id`, `signal`                            |    🟢 100%    |
-| **Pause Container**      | `POST /containers/{id}/pause`   | `id`                                      |    🟢 100%    |
-| **Unpause Container**    | `POST /containers/{id}/unpause` | `id`                                      |    🟢 100%    |
-| **Remove Container**     | `DELETE /containers/{id}`       | `id`, `v`, `force`, `link`                |    🟡 70%     |
-| **List processes**       | `GET /containers/{id}/top`      | -                                         |     🔴 0%     |
-| **Get container logs**   | `GET /containers/{id}/logs`     | -                                         |     🔴 0%     |
-| **Get changes on FS**    | `GET /containers/{id}/changes`  | -                                         |     🔴 0%     |
-| **Export container**     | `GET /containers/{id}/export`   | -                                         |     🔴 0%     |
-| **Get container stats**  | `GET /containers/{id}/stats`    | -                                         |     🔴 0%     |
-| **Update container**     | `POST /containers/{id}/update`  | -                                         |     🔴 0%     |
-| **Wait container**       | `POST /containers/{id}/wait`    | -                                         |     🔴 0%     |
-| **Archive container**    | `GET /containers/{id}/archive`  | -                                         |     🔴 0%     |
-| **Extract to container** | `PUT /containers/{id}/archive`  | -                                         |     🔴 0%     |
-| **Prune containers**     | `POST /containers/prune`       | -                                         |     🔴 0%     |
+| Method                   | Endpoint                        | Supported Parameters                                                                            | Support Level |
+|:-------------------------|:--------------------------------|:------------------------------------------------------------------------------------------------|:-------------:|
+| **List Containers**      | `GET /containers/json`          | `all`, `filters` (name, status, label)                                                          |    🟢 80%     |
+| **Create Container**     | `POST /containers/create`       | `Image`, `Labels`, `name` (query), `HostConfig.NetworkMode`, `NetworkingConfig.EndpointsConfig` |    🟡 70%     |
+| **Inspect Container**    | `GET /containers/{id}/json`     | `id`                                                                                            |    🟢 95%     |
+| **Start Container**      | `POST /containers/{id}/start`   | `id`                                                                                            |    🟢 100%    |
+| **Stop Container**       | `POST /containers/{id}/stop`    | `id`, `t`                                                                                       |    🟢 100%    |
+| **Restart Container**    | `POST /containers/{id}/restart` | `id`, `t`                                                                                       |    🟢 100%    |
+| **Rename Container**     | `POST /containers/{id}/rename`  | `id`, `name` (query)                                                                            |    🟢 100%    |
+| **Resize Container TTY** | `POST /containers/{id}/resize`  | `id`, `h`, `w`                                                                                  |    🟢 100%    |
+| **Kill Container**       | `POST /containers/{id}/kill`    | `id`, `signal`                                                                                  |    🟢 100%    |
+| **Pause Container**      | `POST /containers/{id}/pause`   | `id`                                                                                            |    🟢 100%    |
+| **Unpause Container**    | `POST /containers/{id}/unpause` | `id`                                                                                            |    🟢 100%    |
+| **Remove Container**     | `DELETE /containers/{id}`       | `id`, `v`, `force`, `link`                                                                      |    🟡 70%     |
+| **List processes**       | `GET /containers/{id}/top`      | -                                                                                               |     🔴 0%     |
+| **Get container logs**   | `GET /containers/{id}/logs`     | -                                                                                               |     🔴 0%     |
+| **Get changes on FS**    | `GET /containers/{id}/changes`  | -                                                                                               |     🔴 0%     |
+| **Export container**     | `GET /containers/{id}/export`   | -                                                                                               |     🔴 0%     |
+| **Get container stats**  | `GET /containers/{id}/stats`    | -                                                                                               |     🔴 0%     |
+| **Update container**     | `POST /containers/{id}/update`  | -                                                                                               |     🔴 0%     |
+| **Wait container**       | `POST /containers/{id}/wait`    | -                                                                                               |     🔴 0%     |
+| **Archive container**    | `GET /containers/{id}/archive`  | -                                                                                               |     🔴 0%     |
+| **Extract to container** | `PUT /containers/{id}/archive`  | -                                                                                               |     🔴 0%     |
+| **Prune containers**     | `POST /containers/prune`        | -                                                                                               |     🔴 0%     |
 
 ## Images
 
@@ -49,15 +49,15 @@ This document lists all Docker API methods and parameters that can be mocked usi
 
 ## Networks
 
-| Method            | Endpoint                  | Supported Parameters | Support Level |
-|:------------------|:--------------------------|:---------------------|:-------------:|
-| **List networks** | `GET /networks`           | -                    |     🔴 0%     |
-| **Inspect network**| `GET /networks/{id}`      | -                    |     🔴 0%     |
-| **Remove network** | `DELETE /networks/{id}`    | -                    |     🔴 0%     |
-| **Create network** | `POST /networks/create`   | -                    |     🔴 0%     |
-| **Connect container**| `POST /networks/{id}/connect`| -               |     🔴 0%     |
-| **Disconnect container**| `POST /networks/{id}/disconnect`| -          |     🔴 0%     |
-| **Prune networks** | `POST /networks/prune`    | -                    |     🔴 0%     |
+| Method                   | Endpoint                         | Supported Parameters                                                                             | Support Level  |
+|:-------------------------|:---------------------------------|:-------------------------------------------------------------------------------------------------|:--------------:|
+| **List networks**        | `GET /networks`                  | -                                                                                                |     🟡 60%     |
+| **Inspect network**      | `GET /networks/{id}`             | `id`                                                                                             |     🟡 70%     |
+| **Remove network**       | `DELETE /networks/{id}`          | -                                                                                                |     🔴 0%      |
+| **Create network**       | `POST /networks/create`          | `Name`, `Driver`, `Internal`, `Attachable`, `Ingress`, `EnableIPv6`, `IPAM`, `Options`, `Labels` |     🟢 80%     |
+| **Connect container**    | `POST /networks/{id}/connect`    | -                                                                                                |     🔴 0%      |
+| **Disconnect container** | `POST /networks/{id}/disconnect` | -                                                                                                |     🔴 0%      |
+| **Prune networks**       | `POST /networks/prune`           | -                                                                                                |     🔴 0%      |
 
 ## Volumes
 
