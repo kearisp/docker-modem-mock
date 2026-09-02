@@ -55,7 +55,10 @@ export class ContainerController {
                     State: container.State.Status,
                     Status: status,
                     Ports: [],
-                    Labels: container.Config.Labels || {}
+                    Labels: container.Config.Labels || {},
+                    NetworkSettings: {
+                        Networks: container.NetworkSettings.Networks
+                    }
                 };
             })
         );
@@ -64,7 +67,13 @@ export class ContainerController {
     public async create(req: Request, res: Response) {
         const {
             Image: imageName,
-            Labels = {}
+            Labels = {},
+            HostConfig: {
+                NetworkMode
+            } = {},
+            NetworkingConfig: {
+                EndpointsConfig = {}
+            } = {}
         } = req.body;
 
         const image = this.dockerStorage.getImage(imageName);
@@ -74,6 +83,49 @@ export class ContainerController {
                 message: `No such image: ${req.body.Image}`
             });
             return;
+        }
+
+        // Resolve which network names the container references: the (implicit or explicit) NetworkMode
+        // plus every key of NetworkingConfig.EndpointsConfig. "container:<id>" shares another container's
+        // network namespace and isn't a network resource, so it's excluded from resolution/validation.
+        const resolvedNetworkMode = NetworkMode && NetworkMode !== "default"
+            ? NetworkMode
+            : "bridge";
+
+        const networkNames = new Set<string>(Object.keys(EndpointsConfig));
+
+        if(!resolvedNetworkMode.startsWith("container:")) {
+            networkNames.add(resolvedNetworkMode);
+        }
+
+        for(const name of networkNames) {
+            if(!this.dockerStorage.getNetwork(name)) {
+                res.status(404).send({
+                    message: `network ${name} not found`
+                });
+                return;
+            }
+        }
+
+        const networks: Container["NetworkSettings"]["Networks"] = {};
+
+        for(const name of networkNames) {
+            const network = this.dockerStorage.getNetwork(name)!;
+            const endpointConfig = EndpointsConfig[name] || {};
+
+            networks[name] = {
+                NetworkID: network.Id,
+                EndpointID: generateId(),
+                Gateway: "",
+                IPAddress: "",
+                IPPrefixLen: 0,
+                IPv6Gateway: "",
+                GlobalIPv6Address: "",
+                GlobalIPv6PrefixLen: 0,
+                MacAddress: "",
+                Aliases: endpointConfig.Aliases || null,
+                DriverOpts: endpointConfig.DriverOpts || null
+            };
         }
 
         const container: Container = {
@@ -88,7 +140,11 @@ export class ContainerController {
                 Error: ""
             },
             HostConfig: {
-                ConsoleSize: [0, 0]
+                ConsoleSize: [0, 0],
+                NetworkMode: resolvedNetworkMode
+            },
+            NetworkSettings: {
+                Networks: networks
             },
             Created: new Date(),
             Config: {
@@ -334,7 +390,7 @@ export class ContainerController {
                     Type: "json-file",
                     Config: {}
                 },
-                NetworkMode: "bridge",
+                NetworkMode: container.HostConfig.NetworkMode,
                 PortBindings: {},
                 RestartPolicy: {
                     Name: "no",
@@ -454,25 +510,28 @@ export class ContainerController {
                 IPPrefixLen: 0,
                 IPv6Gateway: "",
                 MacAddress: "",
-                Networks: {
-                    bridge: {
-                        IPAMConfig: null,
-                        Links: null,
-                        Aliases: null,
-                        MacAddress: "",
-                        DriverOpts: null,
-                        GwPriority: 0,
-                        NetworkID: "",
-                        EndpointID: "",
-                        Gateway: "",
-                        IPAddress: "",
-                        IPPrefixLen: 0,
-                        IPv6Gateway: "",
-                        GlobalIPv6Address: "",
-                        GlobalIPv6PrefixLen: 0,
-                        DNSNames: null
-                    }
-                }
+                Networks: Object.fromEntries(
+                    Object.entries(container.NetworkSettings.Networks).map(([name, endpoint]) => [
+                        name,
+                        {
+                            IPAMConfig: null,
+                            Links: null,
+                            Aliases: endpoint.Aliases,
+                            MacAddress: endpoint.MacAddress,
+                            DriverOpts: endpoint.DriverOpts,
+                            GwPriority: 0,
+                            NetworkID: endpoint.NetworkID,
+                            EndpointID: endpoint.EndpointID,
+                            Gateway: endpoint.Gateway,
+                            IPAddress: endpoint.IPAddress,
+                            IPPrefixLen: endpoint.IPPrefixLen,
+                            IPv6Gateway: endpoint.IPv6Gateway,
+                            GlobalIPv6Address: endpoint.GlobalIPv6Address,
+                            GlobalIPv6PrefixLen: endpoint.GlobalIPv6PrefixLen,
+                            DNSNames: null
+                        }
+                    ])
+                )
             },
             ImageManifestDescriptor: {
                 mediaType: "application/vnd.oci.image.manifest.v1+json",

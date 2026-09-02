@@ -2,12 +2,19 @@ import {IncomingMessage} from "http";
 import {Fixtures} from "./Fixtures";
 import {Container} from "../types/Container";
 import {Image} from "../types/Image";
+import {Network} from "../types/Network";
+import {generateId} from "../utils/generateId";
 
 
 export class DockerStorage {
     public containers: Container[] = [];
     public images: Image[] = [];
     public fixtures: Fixtures[] = [];
+    public networks: Network[] = [];
+
+    public constructor() {
+        this.seedDefaultNetworks();
+    }
 
     public listContainer(options: DockerService.ListContainerOptions = {}) {
         const {
@@ -180,6 +187,45 @@ export class DockerStorage {
         );
     }
 
+    public getNetwork(idOrName: string) {
+        return this.networks.find((network) => {
+            return network.Id === idOrName ||
+                network.Id.startsWith(idOrName) ||
+                network.Name === idOrName;
+        });
+    }
+
+    public addNetwork(network: Network) {
+        this.networks.push(network);
+    }
+
+    public listNetworks() {
+        return this.networks;
+    }
+
+    protected seedDefaultNetworks(): void {
+        for(const name of ["bridge", "host", "none"]) {
+            this.networks.push({
+                Id: generateId(),
+                Name: name,
+                Driver: name === "none" ? "null" : name,
+                Scope: "local",
+                Created: new Date(),
+                Internal: false,
+                Attachable: false,
+                Ingress: false,
+                EnableIPv6: false,
+                IPAM: {
+                    Driver: "default",
+                    Config: [],
+                    Options: null
+                },
+                Options: {},
+                Labels: {}
+            });
+        }
+    }
+
     protected chunkedResponse(chunks: string[]): IncomingMessage {
         const socket = {
             end: () => {}
@@ -229,6 +275,9 @@ export class DockerStorage {
         this.containers = [];
         this.images = [];
         this.fixtures = [];
+        this.networks = [];
+
+        this.seedDefaultNetworks();
     }
 }
 

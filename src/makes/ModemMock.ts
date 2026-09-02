@@ -11,6 +11,7 @@ import {HttpMethod} from "../types/HttpMethod";
 import {SessionController} from "../controllers/SessionController";
 import {ContainerController} from "../controllers/ContainerController";
 import {ImageController} from "../controllers/ImageController";
+import {NetworkController} from "../controllers/NetworkController";
 import {ResponseException} from "../exceptions/ResponseException";
 
 
@@ -32,6 +33,7 @@ export class ModemMock extends Modem {
         new SessionController(this.mockRouter);
         new ContainerController(this.mockRouter, this.storage);
         new ImageController(this.mockRouter, this.storage);
+        new NetworkController(this.mockRouter, this.storage);
 
         if(mockFixtures) {
             this.registerFixtures(mockFixtures);
