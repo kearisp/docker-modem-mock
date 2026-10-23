@@ -1,88 +1,170 @@
-import {Router, Request, Response} from "../router";
-import {DockerStorage} from "../makes/DockerStorage";
+import {
+    Controller,
+    Get,
+    Post,
+    Delete,
+    Param,
+    Body,
+    Query,
+    Res,
+    ContainerPipe
+} from "../http";
+import {Response} from "../router";
+import {HttpException} from "../exceptions/HttpException";
+import {DockerService, DockerStorage} from "../makes/DockerStorage";
 import {generateId} from "../utils/generateId";
-import {Container} from "../types/Container";
+import {Container, PortBindings} from "../types/Container";
+import {buildPorts, hostIps, parsePortKey} from "../utils/ports";
 import {ContainerStatus} from "../types/ContainerStatus";
 
 
+@Controller("/containers")
 export class ContainerController {
     public constructor(
-        protected readonly router: Router,
-        protected readonly dockerStorage: DockerStorage
-    ) {
-        this.router.get(["/containers/json", "/:version/containers/json"], this.list.bind(this));
-        this.router.post(["/containers/create", "/:version/containers/create"], this.create.bind(this));
-        this.router.get(["/containers/:id/json", "/:version/containers/:id/json"], this.inspect.bind(this));
-        this.router.post(["/containers/:id/start", "/:version/containers/:id/start"], this.start.bind(this));
-        this.router.post(["/containers/:id/stop", "/:version/containers/:id/stop"], this.stop.bind(this));
-        this.router.post(["/containers/:id/resize", "/:version/containers/:id/resize"], this.resize.bind(this));
-        this.router.post(["/containers/:id/kill", "/:version/containers/:id/kill"], this.kill.bind(this));
-        this.router.post(["/containers/:id/restart", "/:version/containers/:id/restart"], this.restart.bind(this));
-        this.router.post(["/containers/:id/rename", "/:version/containers/:id/rename"], this.rename.bind(this));
-        this.router.post(["/containers/:id/pause", "/:version/containers/:id/pause"], this.pause.bind(this));
-        this.router.post(["/containers/:id/unpause", "/:version/containers/:id/unpause"], this.unpause.bind(this));
-        this.router.delete(["/containers/:id", "/:version/containers/:id"], this.delete.bind(this));
+        protected readonly storage: DockerStorage
+    ) {}
+
+    protected getStatus(container: Container): string {
+        if(!container.State.Running || !container.State.StartedAt) {
+            return container.State.Status;
+        }
+
+        const diff = Math.floor((new Date().getTime() - container.State.StartedAt.getTime()) / 1000);
+
+        if(diff < 60) {
+            return `Up ${diff} seconds`;
+        }
+
+        if(diff < 3600) {
+            return `Up ${Math.floor(diff / 60)} minutes`;
+        }
+
+        if(diff < 86400) {
+            return `Up ${Math.floor(diff / 3600)} hours`;
+        }
+
+        return `Up ${Math.floor(diff / 86400)} days`;
     }
 
-    public async list(req: Request, res: Response) {
-        res.status(200).send(
-            this.dockerStorage.listContainer(req.body).map((container) => {
-                let status = container.State.Status as string;
+    protected getPortsMap(container: Container) {
+        if(!container.State.Running) {
+            return {};
+        }
 
-                if(container.State.Running && container.State.StartedAt) {
-                    const diff = Math.floor((new Date().getTime() - container.State.StartedAt.getTime()) / 1000);
+        const map: {[port: string]: {HostIp: string; HostPort: string}[] | null} = {};
 
-                    if(diff < 60) {
-                        status = `Up ${diff} seconds`;
-                    }
-                    else if(diff < 3600) {
-                        status = `Up ${Math.floor(diff / 60)} minutes`;
-                    }
-                    else if(diff < 86400) {
-                        status = `Up ${Math.floor(diff / 3600)} hours`;
-                    }
-                    else {
-                        status = `Up ${Math.floor(diff / 86400)} days`;
-                    }
+        for(const key of Object.keys(container.Config.ExposedPorts)) {
+            const bindings = container.HostConfig.PortBindings[key];
+
+            map[key] = bindings && bindings.length > 0
+                ? bindings.flatMap(({HostIp, HostPort}) => hostIps(HostIp).map((ip) => ({HostIp: ip, HostPort})))
+                : null;
+        }
+
+        return map;
+    }
+
+    /**
+     * Allocates free host ports for empty `HostPort` bindings and verifies that none of the host ports
+     * is already taken by a running container. Like Docker, the conflict is reported on start, not on create.
+     */
+    protected bindPorts(container: Container): void {
+        const taken = this.storage.containers
+            .filter((other) => other !== container && other.State.Running)
+            .flatMap((other) => other.Ports.filter((p) => p.PublicPort !== undefined));
+
+        const bindings = Object.entries(container.HostConfig.PortBindings).flatMap(([key, list]) => {
+            return list.map((binding) => ({key, binding}));
+        });
+
+        const allocated: {key: string; binding: PortBindings[string][number]; hostPort: string}[] = [];
+
+        for(const {key, binding} of bindings) {
+            const {type} = parsePortKey(key);
+            const ip = binding.HostIp || "0.0.0.0";
+            let hostPort = binding.HostPort;
+
+            if(!hostPort) {
+                hostPort = `${this.storage.allocateHostPort(type, taken.concat(allocated.map(a => ({
+                    IP: a.binding.HostIp || "0.0.0.0",
+                    PrivatePort: 0,
+                    PublicPort: parseInt(a.hostPort),
+                    Type: parsePortKey(a.key).type
+                }))))}`;
+            }
+
+            const conflict = taken.some((p) => {
+                return p.PublicPort === parseInt(hostPort)
+                    && p.Type === type
+                    && (p.IP === ip || p.IP === "0.0.0.0" || ip === "0.0.0.0");
+            }) || allocated.some((a) => {
+                const aIp = a.binding.HostIp || "0.0.0.0";
+
+                return a.hostPort === hostPort
+                    && parsePortKey(a.key).type === type
+                    && (aIp === ip || aIp === "0.0.0.0" || ip === "0.0.0.0");
+            });
+
+            if(conflict) {
+                throw new HttpException(
+                    500,
+                    `driver failed programming external connectivity on endpoint ${container.Name} (${container.Id}): ` +
+                    `Bind for ${ip}:${hostPort} failed: port is already allocated`
+                );
+            }
+
+            allocated.push({key, binding, hostPort});
+        }
+
+        for(const {binding, hostPort} of allocated) {
+            binding.HostPort = hostPort;
+        }
+
+        container.Ports = buildPorts(Object.keys(container.Config.ExposedPorts), container.HostConfig.PortBindings);
+    }
+
+    @Get("json")
+    public list(@Query() query: DockerService.ListContainerOptions) {
+        return this.storage.listContainer(query).map((container) => {
+            return {
+                Id: container.Id,
+                Names: [`/${container.Name}`],
+                Image: container.Image,
+                ImageID: "",
+                Created: container.Created,
+                State: container.State.Status,
+                Status: this.getStatus(container),
+                Ports: container.State.Running ? container.Ports : [],
+                Labels: container.Config.Labels || {},
+                NetworkSettings: {
+                    Networks: container.NetworkSettings.Networks
                 }
-
-                return {
-                    Id: container.Id,
-                    Names: [`/${container.Name}`],
-                    Image: container.Image,
-                    ImageID: "",
-                    Created: container.Created,
-                    State: container.State.Status,
-                    Status: status,
-                    Ports: [],
-                    Labels: container.Config.Labels || {},
-                    NetworkSettings: {
-                        Networks: container.NetworkSettings.Networks
-                    }
-                };
-            })
-        );
+            };
+        });
     }
 
-    public async create(req: Request, res: Response) {
+    @Post("create")
+    public create(
+        @Body() body: any,
+        @Res() res: Response
+    ) {
         const {
             Image: imageName,
             Labels = {},
+            ExposedPorts = {},
             HostConfig: {
-                NetworkMode
+                NetworkMode,
+                PortBindings = {}
             } = {},
             NetworkingConfig: {
                 EndpointsConfig = {}
             } = {}
-        } = req.body;
+        } = body;
 
-        const image = this.dockerStorage.getImage(imageName);
+        const image = this.storage.getImage(imageName);
 
         if(!image) {
-            res.status(404).send({
-                message: `No such image: ${req.body.Image}`
-            });
-            return;
+            throw new HttpException(404, `No such image: ${imageName}`);
         }
 
         // Resolve which network names the container references: the (implicit or explicit) NetworkMode
@@ -99,18 +181,15 @@ export class ContainerController {
         }
 
         for(const name of networkNames) {
-            if(!this.dockerStorage.getNetwork(name)) {
-                res.status(404).send({
-                    message: `network ${name} not found`
-                });
-                return;
+            if(!this.storage.getNetwork(name)) {
+                throw new HttpException(404, `network ${name} not found`);
             }
         }
 
         const networks: Container["NetworkSettings"]["Networks"] = {};
 
         for(const name of networkNames) {
-            const network = this.dockerStorage.getNetwork(name)!;
+            const network = this.storage.getNetwork(name)!;
             const endpointConfig = EndpointsConfig[name] || {};
 
             networks[name] = {
@@ -128,9 +207,27 @@ export class ContainerController {
             };
         }
 
+        const portBindings: PortBindings = {};
+
+        for(const [key, bindings] of Object.entries<any[] | null>(PortBindings)) {
+            portBindings[key] = (bindings || []).map((binding) => ({
+                HostIp: binding.HostIp || "",
+                HostPort: binding.HostPort || ""
+            }));
+        }
+
+        const exposedPorts: Container["Config"]["ExposedPorts"] = {
+            ...image.Config.ExposedPorts || {},
+            ...ExposedPorts
+        };
+
+        for(const key of Object.keys(portBindings)) {
+            exposedPorts[key] = {};
+        }
+
         const container: Container = {
             Id: generateId(),
-            Name: `${req.body.name}`,
+            Name: `${body.name}`,
             Image: image.Id,
             State: {
                 Running: false,
@@ -141,218 +238,42 @@ export class ContainerController {
             },
             HostConfig: {
                 ConsoleSize: [0, 0],
-                NetworkMode: resolvedNetworkMode
+                NetworkMode: resolvedNetworkMode,
+                PortBindings: portBindings
             },
             NetworkSettings: {
                 Networks: networks
             },
-            Created: new Date(),
+            Ports: buildPorts(Object.keys(exposedPorts), portBindings),
             Config: {
                 Image: imageName,
+                ExposedPorts: exposedPorts,
                 Labels: {
                     ...image.Config.Labels || {},
                     ...Labels
                 }
-            }
+            },
+            Created: new Date()
         };
 
-        this.dockerStorage.addContainer(container);
+        this.storage.addContainer(container);
 
-        res.status(201).send({
+        res.status(201);
+
+        return {
             Id: container.Id
-        });
+        };
     }
 
-    public async start(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        if(container.State.Running) {
-            res.status(304).send({
-                message: "container already started"
-            });
-
-            return;
-        }
-
-        if(container.State.Paused) {
-            res.status(304).send({
-                message: "cannot start a paused container, try unpause instead"
-            });
-
-            return;
-        }
-
-        container.State.Running = true;
-        container.State.Status = ContainerStatus.RUNNING;
-        container.State.StartedAt = new Date();
-
-        res.status(204).send({});
-    }
-
-    public async stop(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        container.State.Running = false;
-        container.State.Paused = false;
-        container.State.Status = ContainerStatus.EXITED;
-        container.State.FinishedAt = new Date();
-
-        res.status(200).send({});
-    }
-
-    public async restart(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        res.status(204).send({});
-    }
-
-    public async rename(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        container.Name = req.body.name;
-
-        res.status(204).send({});
-    }
-
-    public async resize(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        const h = parseInt(req.body.h as string);
-        const w = parseInt(req.body.w as string);
-
-        container.HostConfig.ConsoleSize = [h, w];
-
-        res.status(200).send({});
-    }
-
-    public async kill(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        if(!container.State.Running) {
-            res.status(409).send({
-                message: `Container is not running`
-            });
-
-            return;
-        }
-
-        container.State.Running = false;
-        container.State.Status = ContainerStatus.EXITED;
-
-        res.status(204).send({});
-    }
-
-    public async pause(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        container.State.Status = ContainerStatus.PAUSED;
-        container.State.Paused = true;
-
-        res.status(204).send({});
-    }
-
-    public async unpause(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        if(!container.State.Paused) {
-            res.status(304).send({
-                message: `Container ${container.Id} is not paused`
-            });
-
-            return;
-        }
-
-        container.State.Status = ContainerStatus.RUNNING;
-        container.State.Paused = false;
-
-        res.status(204).send({});
-    }
-
-    public async inspect(req: Request, res: Response) {
-        const container = this.dockerStorage.getContainer(req.params.id);
-
-        if(!container) {
-            res.status(404).send({
-                message: `No such container: ${req.params.id}`
-            });
-
-            return;
-        }
-
-        const image = this.dockerStorage.getImageById(container.Image);
+    @Get(":id/json")
+    public inspect(@Param("id", ContainerPipe) container: Container) {
+        const image = this.storage.getImageById(container.Image);
 
         if(!image) {
-            res.status(500).send({
-                message: `Image ${container.Image} not found`
-            });
-            return;
+            throw new HttpException(500, `Image ${container.Image} not found`);
         }
 
-        res.status(200).send({
+        return {
             Id: container.Id,
             Name: `/${container.Name}`,
             Created: container.Created.toISOString(),
@@ -391,7 +312,7 @@ export class ContainerController {
                     Config: {}
                 },
                 NetworkMode: container.HostConfig.NetworkMode,
-                PortBindings: {},
+                PortBindings: container.HostConfig.PortBindings,
                 RestartPolicy: {
                     Name: "no",
                     MaximumRetryCount: 0
@@ -484,6 +405,7 @@ export class ContainerController {
                     "/usr/local/bin/bun"
                 ],
                 Image: "oven/bun:alpine",
+                ExposedPorts: container.Config.ExposedPorts,
                 Volumes: null,
                 WorkingDir: "/home/bun/app",
                 Entrypoint: [
@@ -496,7 +418,7 @@ export class ContainerController {
                 Bridge: "",
                 SandboxID: "",
                 SandboxKey: "",
-                Ports: {},
+                Ports: this.getPortsMap(container),
                 HairpinMode: false,
                 LinkLocalIPv6Address: "",
                 LinkLocalIPv6PrefixLen: 0,
@@ -542,14 +464,92 @@ export class ContainerController {
                     os: "linux"
                 }
             }
-        });
+        };
     }
 
-    public async delete(req: Request, res: Response) {
-        this.dockerStorage.containers = this.dockerStorage.containers.filter((container) => {
-            return container.Id !== req.params.id;
-        });
+    @Post(":id/start")
+    public start(@Param("id", ContainerPipe) container: Container, @Res() res: Response) {
+        if(container.State.Running) {
+            throw new HttpException(304, "container already started");
+        }
 
-        res.status(200).send({});
+        if(container.State.Paused) {
+            throw new HttpException(304, "cannot start a paused container, try unpause instead");
+        }
+
+        this.bindPorts(container);
+
+        container.State.Running = true;
+        container.State.Status = ContainerStatus.RUNNING;
+        container.State.StartedAt = new Date();
+
+        res.status(204);
+    }
+
+    @Post(":id/stop")
+    public stop(@Param("id", ContainerPipe) container: Container) {
+        container.State.Running = false;
+        container.State.Paused = false;
+        container.State.Status = ContainerStatus.EXITED;
+        container.State.FinishedAt = new Date();
+    }
+
+    @Post(":id/resize")
+    public resize(@Param("id", ContainerPipe) container: Container, @Query() query: {h: string; w: string}) {
+        const h = parseInt(query.h);
+        const w = parseInt(query.w);
+
+        container.HostConfig.ConsoleSize = [h, w];
+    }
+
+    @Post(":id/kill")
+    public kill(@Param("id", ContainerPipe) container: Container, @Res() res: Response) {
+        if(!container.State.Running) {
+            throw new HttpException(409, "Container is not running");
+        }
+
+        container.State.Running = false;
+        container.State.Status = ContainerStatus.EXITED;
+
+        res.status(204);
+    }
+
+    @Post(":id/restart")
+    public restart(@Param("id", ContainerPipe) _container: Container, @Res() res: Response) {
+        res.status(204);
+    }
+
+    @Post(":id/rename")
+    public rename(@Param("id", ContainerPipe) container: Container, @Query() query: {name: string}, @Res() res: Response) {
+        container.Name = query.name;
+
+        res.status(204);
+    }
+
+    @Post(":id/pause")
+    public pause(@Param("id", ContainerPipe) container: Container, @Res() res: Response) {
+        container.State.Status = ContainerStatus.PAUSED;
+        container.State.Paused = true;
+
+        res.status(204);
+    }
+
+    @Post(":id/unpause")
+    public unpause(@Param("id", ContainerPipe) container: Container, @Res() res: Response) {
+        if(!container.State.Paused) {
+            throw new HttpException(304, `Container ${container.Id} is not paused`);
+        }
+
+        container.State.Status = ContainerStatus.RUNNING;
+        container.State.Paused = false;
+
+        res.status(204);
+    }
+
+    @Delete(":id")
+    public remove(@Param("id") id: string) {
+        this.storage.containers = this.storage.containers.filter((container) => {
+            return container.Id !== id;
+        });
     }
 }

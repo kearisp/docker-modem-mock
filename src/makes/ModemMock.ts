@@ -7,10 +7,12 @@ import type {
 import {Router} from "../router";
 import {DockerStorage} from "./DockerStorage";
 import {Fixtures} from "./Fixtures";
+import {registerController} from "../http";
 import {HttpMethod} from "../types/HttpMethod";
 import {SessionController} from "../controllers/SessionController";
 import {ContainerController} from "../controllers/ContainerController";
 import {ImageController} from "../controllers/ImageController";
+import {BuildController} from "../controllers/BuildController";
 import {NetworkController} from "../controllers/NetworkController";
 import {ResponseException} from "../exceptions/ResponseException";
 
@@ -30,10 +32,17 @@ export class ModemMock extends Modem {
         this.mockRouter = new Router();
         this.storage = new DockerStorage();
 
-        new SessionController(this.mockRouter);
-        new ContainerController(this.mockRouter, this.storage);
-        new ImageController(this.mockRouter, this.storage);
-        new NetworkController(this.mockRouter, this.storage);
+        const controllers = [
+            new SessionController(),
+            new ContainerController(this.storage),
+            new ImageController(this.storage),
+            new BuildController(this.storage),
+            new NetworkController(this.storage)
+        ];
+
+        for(const controller of controllers) {
+            registerController(this.mockRouter, controller, (Pipe) => new Pipe(this.storage));
+        }
 
         if(mockFixtures) {
             this.registerFixtures(mockFixtures);

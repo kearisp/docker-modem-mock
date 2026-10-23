@@ -1,0 +1,90 @@
+{
+    "Architecture": "amd64",
+    "Author": "",
+    "Comment": "buildkit.dockerfile.v0",
+    "Config": {
+        "AttachStderr": false,
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "Cmd": [
+            "apache2-foreground"
+        ],
+        "Domainname": "",
+        "Entrypoint": [
+            "docker-php-entrypoint"
+        ],
+        "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PHPIZE_DEPS=autoconf \t\tdpkg-dev \t\tfile \t\tg++ \t\tgcc \t\tlibc-dev \t\tmake \t\tpkg-config \t\tre2c",
+            "PHP_INI_DIR=/usr/local/etc/php",
+            "APACHE_CONFDIR=/etc/apache2",
+            "APACHE_ENVVARS=/etc/apache2/envvars",
+            "PHP_CFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+            "PHP_CPPFLAGS=-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64",
+            "PHP_LDFLAGS=-Wl,-O1 -pie",
+            "GPG_KEYS=1198C0117593497A5EC5C199286AF1F9897469DC C28D937575603EB4ABB725861C0779DC5C0A9DE4 AFD8691FDAEDF03BDF6E460563F15A9B715376CA",
+            "PHP_VERSION=8.3.36",
+            "PHP_URL=https://www.php.net/distributions/php-8.3.36.tar.xz",
+            "PHP_ASC_URL=https://www.php.net/distributions/php-8.3.36.tar.xz.asc",
+            "PHP_SHA256=dd54693aa334c5c4d72e9aee96b082c2473750a18a6c1d105789c93a3b1692fd"
+        ],
+        "ExposedPorts": {
+            "80/tcp": {}
+        },
+        "Hostname": "",
+        "Image": "",
+        "Labels": null,
+        "OnBuild": null,
+        "OpenStdin": false,
+        "StdinOnce": false,
+        "StopSignal": "SIGWINCH",
+        "Tty": false,
+        "User": "",
+        "Volumes": null,
+        "WorkingDir": "/var/www/html"
+    },
+    "Created": "2026-10-21T15:58:08.534014702Z",
+    "Descriptor": {
+        "digest": "sha256:1b8b5b0f31cc4552fa3da2f0f02556a8207cbca6e86ec4882ff7b6a644c84a2b",
+        "mediaType": "application/vnd.oci.image.index.v1+json",
+        "size": 10349
+    },
+    "DockerVersion": "",
+    "GraphDriver": {
+        "Data": null,
+        "Name": "overlayfs"
+    },
+    "Id": "sha256:1b8b5b0f31cc4552fa3da2f0f02556a8207cbca6e86ec4882ff7b6a644c84a2b",
+    "Metadata": {
+        "LastTagTime": "2026-10-23T23:51:55.094719344Z"
+    },
+    "Os": "linux",
+    "Parent": "",
+    "RepoDigests": [
+        "php@sha256:1b8b5b0f31cc4552fa3da2f0f02556a8207cbca6e86ec4882ff7b6a644c84a2b"
+    ],
+    "RepoTags": [
+        "php:8.3-apache"
+    ],
+    "RootFS": {
+        "Layers": [
+            "sha256:a70f6272827f64e1427d048ced77491aab5d64ab95725e56920802ff391197d7",
+            "sha256:e04271525bdc22d02819952e839b7a00ee78fd9092434dbe58e2c5e2cef123d9",
+            "sha256:a6d598056e7d8d317652d2705a2b26369fbeeabc8419a171f8bb4a1b2d2c6e6c",
+            "sha256:ee5fb2ad81f35fae2810ff4387b4e65177d198629ef832909dbd4468f89677a1",
+            "sha256:6546b147e6dc0aa23cd69b2c2961bf7f8c733f679fb53ac539f2f0492fddc70b",
+            "sha256:c281b6388bea3c8f256d111782142a25a0e4a25c6791ba0b38af437038625ee6",
+            "sha256:a4fdb54edbf5bbc18113a89c54ff73c7517dae1c7f128082f0903d88f21b8ff3",
+            "sha256:f46595a9f0a6406bf8ca196186bced009a68201745801b708df921fa5dac5546",
+            "sha256:e588ee1fdeb42b5378fb545ce9cfce489b8efe60c29e4308ff09a47aea84ea12",
+            "sha256:5f415896ad9c50b91c4c48884a6a89f1b70b7315e20b2fe7bb677266c8e5bfb8",
+            "sha256:7fb34bf21abf333d1f94030cc817f92c6fc4e968eb1242812a7df1deb96cac18",
+            "sha256:73f418f3c98dd31189719f5aff3d3803dd7e6fb39cd66a4305be1131804f1827",
+            "sha256:aeef413bf7427811ee77437f1cb9de35a7e18d413088da13236740123e33c8d4",
+            "sha256:83a190b6e0b396722983386091edb034eac9050698ded5baa76026d1f94d5a86",
+            "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ],
+        "Type": "layers"
+    },
+    "Size": 176559792
+}

@@ -1,15 +1,11 @@
 import {Duplex} from "stream";
-import {Router, Request, Response} from "../router";
+import {Controller, Post} from "../http";
 
 
+@Controller("/session")
 export class SessionController {
-    public constructor(
-        protected readonly router: Router
-    ) {
-        this.router.post(["/session", "/:version/session"], (_req: Request, res: Response): void => {
-            const duplex = new Duplex();
-
-            res.send(duplex);
-        });
+    @Post()
+    public create() {
+        return new Duplex();
     }
 }

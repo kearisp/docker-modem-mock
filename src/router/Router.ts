@@ -119,9 +119,16 @@ export class Router {
         return params;
     }
 
+    protected splitVersion(pathname: string): [string | undefined, string] {
+        const match = /^\/(v\d+(?:\.\d+)*)(\/.*)$/.exec(pathname);
+
+        return match ? [match[1], match[2]] : [undefined, pathname];
+    }
+
     public async exec(method: HttpMethod, path: string, body: any, options: any = {}): Promise<Response> {
         const url = new URL(path, "https://localhost"),
-              [handler, params] = this.parseRoute(method, url.pathname);
+              [version, pathname] = this.splitVersion(url.pathname),
+              [handler, params] = this.parseRoute(method, pathname);
 
         if(!handler) {
             throw new Error(`Route ${method} ${path} not found`);
@@ -130,7 +137,7 @@ export class Router {
         const request = new Request(
             method,
             url.pathname,
-            params,
+            version ? {...params, version} : params,
             body,
             options
         );

@@ -1,8 +1,13 @@
 export class Response {
     protected _status: number = 200;
     protected _body: any;
+    protected _sent: boolean = false;
 
     public constructor() {}
+
+    public get sent(): boolean {
+        return this._sent;
+    }
 
     public get statusCode(): number {
         return this._status;
@@ -19,6 +24,7 @@ export class Response {
 
     public send(body: any): this {
         this._body = body;
+        this._sent = true;
         return this;
     }
 }
