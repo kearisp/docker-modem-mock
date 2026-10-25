@@ -1,0 +1,295 @@
+{"status":"Pulling from library/php","id":"8.3-apache"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"4f4fb700ef54"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"bb12890a17d1"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"b002f4a2e35c"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"b54c60b4d8e1"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"3d6f1b78dec5"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"5d4fc249819d"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"1eae320ffbf6"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"70645fed3c0a"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"62fb63781bca"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"0610d81e484e"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"f96b87fe6f64"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"7a0236e4baaa"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"3c659027b42f"}
+{"status":"Pulling fs layer","progressDetail":{},"id":"629751087165"}
+{"status":"Already exists","progressDetail":{"hidecounts":true},"id":"4f4fb700ef54"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"4f4fb700ef54"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"bb12890a17d1"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"3d6f1b78dec5"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"70645fed3c0a"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"62fb63781bca"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":488,"total":488},"id":"5d4fc249819d"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"b002f4a2e35c"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"b54c60b4d8e1"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"629751087165"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"5d4fc249819d"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"7a0236e4baaa"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"62fb63781bca"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":12582912,"total":12836317},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"74ce221d01bc"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"1eae320ffbf6"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":7219830},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"d9c11ea90e6e"}
+{"status":"Downloading","progressDetail":{"current":1048576,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":2097152,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":4194304,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":5242880,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":3145728,"total":4244105},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"3c659027b42f"}
+{"status":"Downloading","progressDetail":{"current":6291456,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":7340032,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":8388608,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":9437184,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":11534336,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":10485760,"total":11764573},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":12582912,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"0610d81e484e"}
+{"status":"Downloading","progressDetail":{"current":13631488,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":13631488,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":14680064,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":14680064,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":15728640,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":16777216,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":17825792,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":18874368,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":19922944,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":20971520,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":22020096,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":23068672,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":24117248,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":26214400,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":27262976,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":28311552,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":29360128,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":29360128,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":30408704,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":31457280,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":31457280,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":33554432,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":34603008,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":35651584,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":36700160,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":38797312,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":39845888,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":40894464,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":41943040,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":41943040,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":42991616,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":44040192,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":45088768,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":47185920,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":48234496,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":49283072,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":50331648,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":51380224,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":52428800,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":53477376,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":55574528,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":56623104,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":57671680,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":58720256,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":59768832,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":60817408,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":61865984,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":62914560,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":63963136,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":65011712,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":66060288,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":67108864,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":68157440,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":69206016,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":71303168,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":72351744,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":73400320,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":74448896,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":75497472,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":76546048,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":77594624,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":78643200,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":79691776,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":80740352,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":81788928,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":83886080,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":84934656,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":85983232,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":87031808,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":88080384,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":89128960,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":90177536,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":91226112,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":92274688,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":93323264,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":94371840,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":95420416,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":97517568,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":98566144,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":99614720,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":100663296,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":101711872,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":102760448,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":103809024,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":104857600,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":105906176,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":105906176,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":106954752,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":106954752,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":106954752,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":108003328,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":109051904,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":110100480,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":111149056,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":112197632,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":113246208,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":114294784,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":115343360,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Downloading","progressDetail":{"current":116391936,"total":117839298},"id":"f96b87fe6f64"}
+{"status":"Download complete","progressDetail":{"hidecounts":true},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":2,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Extracting","progressDetail":{"current":3,"units":"s"},"id":"f96b87fe6f64"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"f96b87fe6f64"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"70645fed3c0a"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"3c659027b42f"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"3c659027b42f"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"3d6f1b78dec5"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"b54c60b4d8e1"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"1eae320ffbf6"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"5d4fc249819d"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"0610d81e484e"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"0610d81e484e"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"0610d81e484e"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"b002f4a2e35c"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"629751087165"}
+{"status":"Extracting","progressDetail":{"current":1,"units":"s"},"id":"7a0236e4baaa"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"0610d81e484e"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"bb12890a17d1"}
+{"status":"Pull complete","progressDetail":{"hidecounts":true},"id":"7a0236e4baaa"}
+{"status":"Digest: sha256:1b8b5b0f31cc4552fa3da2f0f02556a8207cbca6e86ec4882ff7b6a644c84a2b"}
+{"status":"Status: Downloaded newer image for php:8.3-apache"}

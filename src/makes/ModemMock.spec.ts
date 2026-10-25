@@ -333,7 +333,14 @@ describe("ModemMock", () => {
 
         const container = await docker.createContainer({
             name: "test.workspace",
-            Image: "node:23"
+            Image: "node:23",
+            HostConfig: {
+                PortBindings: {
+                    "80/tcp": [{
+                        HostPort: "80"
+                    }]
+                }
+            }
         });
 
         let inspectInfo = await container.inspect();
@@ -356,8 +363,18 @@ describe("ModemMock", () => {
         expect(new Date(inspectInfo.State.StartedAt).getTime()).toBeGreaterThan(beforeStart.getTime());
 
         const list = await docker.listContainers();
+
         expect(list.length).toBe(1);
         expect(list[0].Status).toMatch(/^Up \d+ seconds$/);
+        expect(list[0].Ports).toEqual([
+            {IP: "0.0.0.0", PrivatePort: 80, PublicPort: 80, Type: "tcp"},
+            {IP: "::", PrivatePort: 80, PublicPort: 80, Type: "tcp"}
+        ]);
+        expect(inspectInfo.HostConfig.PortBindings["80/tcp"]).toEqual([{HostIp: "", HostPort: "80"}]);
+        expect(inspectInfo.NetworkSettings.Ports["80/tcp"]).toEqual([
+            {HostIp: "0.0.0.0", HostPort: "80"},
+            {HostIp: "::", HostPort: "80"}
+        ]);
 
         await container.stop();
 
@@ -371,6 +388,116 @@ describe("ModemMock", () => {
         const containers = await docker.listContainers();
 
         expect(containers.length).toBe(0);
+    });
+
+    it("should fail to start a container on an already allocated port", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        const create = (name: string) => {
+            return docker.createContainer({
+                name,
+                Image: "node:23",
+                HostConfig: {
+                    PortBindings: {
+                        "80/tcp": [{HostPort: "8080"}]
+                    }
+                }
+            });
+        };
+
+        const first = await create("first.workspace");
+        const second = await create("second.workspace");
+
+        await first.start();
+
+        let thrown: any;
+
+        try {
+            await second.start();
+        }
+        catch(err) {
+            thrown = err;
+        }
+
+        expect(thrown).toBeDefined();
+        expect(thrown.statusCode).toBe(500);
+        expect(thrown.json.message).toBe(
+            `driver failed programming external connectivity on endpoint second.workspace (${second.id}): ` +
+            "Bind for 0.0.0.0:8080 failed: port is already allocated"
+        );
+
+        await first.stop();
+        await second.start();
+
+        const list = await docker.listContainers();
+
+        expect(list.length).toBe(1);
+        expect(list[0].Id).toBe(second.id);
+    });
+
+    it("should expose ports without host binding and allocate free host ports", async (): Promise<void> => {
+        const {docker} = getContext("v1");
+
+        await followStream(await docker.pull("node:23"));
+
+        const container = await docker.createContainer({
+            name: "exposed.workspace",
+            Image: "node:23",
+            ExposedPorts: {
+                "3000/tcp": {}
+            },
+            HostConfig: {
+                PortBindings: {
+                    "80/tcp": [{HostPort: ""}]
+                }
+            }
+        });
+
+        await container.start();
+
+        const [info] = await docker.listContainers();
+
+        expect(info.Ports).toContainEqual({IP: "", PrivatePort: 3000, Type: "tcp"});
+        expect(info.Ports).toContainEqual({IP: "0.0.0.0", PrivatePort: 80, PublicPort: 32768, Type: "tcp"});
+        expect(info.Ports).toContainEqual({IP: "::", PrivatePort: 80, PublicPort: 32768, Type: "tcp"});
+
+        const inspectInfo = await container.inspect();
+
+        expect(inspectInfo.NetworkSettings.Ports["3000/tcp"]).toBeNull();
+        expect(inspectInfo.Config.ExposedPorts).toEqual({"80/tcp": {}, "3000/tcp": {}});
+    });
+
+    it.each(["v1", "v1.48"])("should return the image exposed port even though it is not bound on the host", async (version): Promise<void> => {
+        const {docker} = getContext(version);
+
+        await followStream(await docker.pull("php:8.3-apache"));
+
+        const container = await docker.createContainer({
+            name: "php.workspace",
+            Image: "php:8.3-apache"
+        });
+
+        let inspectInfo = await container.inspect();
+
+        expect(inspectInfo.Config.ExposedPorts).toEqual({"80/tcp": {}});
+        expect(inspectInfo.HostConfig.PortBindings).toEqual({});
+
+        await container.start();
+
+        const [info] = await docker.listContainers();
+
+        expect(info.Ports).toEqual([
+            {IP: "", PrivatePort: 80, Type: "tcp"}
+        ]);
+
+        inspectInfo = await container.inspect();
+
+        expect(inspectInfo.NetworkSettings.Ports).toEqual({"80/tcp": null});
+
+        await container.stop();
+        await container.remove();
     });
 
     it("should rename container", async (): Promise<void> => {

@@ -1,24 +1,23 @@
-import {Router, Request, Response} from "../router";
+import {Controller, Get, Post, Param, Body, Res, NetworkPipe} from "../http";
+import {Response} from "../router";
 import {DockerStorage} from "../makes/DockerStorage";
 import {generateId} from "../utils/generateId";
 import {Network} from "../types/Network";
 
 
+type CreateNetworkBody = Pick<Network, "Name"> & Partial<Omit<Network, "Id" | "Name" | "Scope" | "Created">>;
+
+@Controller("/networks")
 export class NetworkController {
     public constructor(
-        protected readonly router: Router,
-        protected readonly dockerStorage: DockerStorage
-    ) {
-        this.router.get(["/networks", "/:version/networks"], this.list.bind(this));
-        this.router.post(["/networks/create", "/:version/networks/create"], this.create.bind(this));
-        this.router.get(["/networks/:id", "/:version/networks/:id"], this.inspect.bind(this));
-    }
+        protected readonly storage: DockerStorage
+    ) {}
 
     protected toInspect(network: Network) {
         const containers: Record<string, any> = {};
 
-        for(const container of this.dockerStorage.containers) {
-            for(const [name, endpoint] of Object.entries(container.NetworkSettings.Networks)) {
+        for(const container of this.storage.containers) {
+            for(const endpoint of Object.values(container.NetworkSettings.Networks)) {
                 if(endpoint.NetworkID !== network.Id) {
                     continue;
                 }
@@ -54,13 +53,13 @@ export class NetworkController {
         };
     }
 
-    public async list(req: Request, res: Response) {
-        res.status(200).send(
-            this.dockerStorage.listNetworks().map((network) => this.toInspect(network))
-        );
+    @Get()
+    public list() {
+        return this.storage.listNetworks().map((network) => this.toInspect(network));
     }
 
-    public async create(req: Request, res: Response) {
+    @Post("create")
+    public create(@Body() body: CreateNetworkBody, @Res() res: Response) {
         const {
             Name,
             Driver = "bridge",
@@ -75,7 +74,7 @@ export class NetworkController {
             },
             Options = {},
             Labels = {}
-        } = req.body;
+        } = body;
 
         const network: Network = {
             Id: generateId(),
@@ -92,25 +91,18 @@ export class NetworkController {
             Labels
         };
 
-        this.dockerStorage.addNetwork(network);
+        this.storage.addNetwork(network);
 
-        res.status(201).send({
+        res.status(201);
+
+        return {
             Id: network.Id,
             Warning: ""
-        });
+        };
     }
 
-    public async inspect(req: Request, res: Response) {
-        const network = this.dockerStorage.getNetwork(req.params.id);
-
-        if(!network) {
-            res.status(404).send({
-                message: `network ${req.params.id} not found`
-            });
-
-            return;
-        }
-
-        res.status(200).send(this.toInspect(network));
+    @Get(":id")
+    public inspect(@Param("id", NetworkPipe) network: Network) {
+        return this.toInspect(network);
     }
 }

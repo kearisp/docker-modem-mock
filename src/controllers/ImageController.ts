@@ -1,21 +1,31 @@
-import {Logger} from "@kearisp/cli";
-import {Router, Request, Response} from "../router";
-import {DockerStorage} from "../makes/DockerStorage";
+import {
+    Controller,
+    Get,
+    Post,
+    Delete,
+    Param,
+    Query,
+    ImagePipe
+} from "../http";
+import {HttpException} from "../exceptions/HttpException";
+import {DockerService, DockerStorage} from "../makes/DockerStorage";
+import {Image} from "../types/Image";
 
+
+type PullQuery = {
+    fromImage: string;
+    tag: string;
+};
+
+@Controller("/images")
 export class ImageController {
     public constructor(
-        protected readonly router: Router,
-        protected readonly dockerStorage: DockerStorage
-    ) {
-        this.router.get(["/images/json", "/:version/images/json"], this.list.bind(this));
-        this.router.post(["/images/create", "/:version/images/create"], this.pull.bind(this));
-        this.router.post(["/build", "/:version/build"], this.build.bind(this));
-        this.router.get(["/images/:tag/json", "/:version/images/:tag/json"], this.inspect.bind(this));
-        this.router.delete(["/images/:tag", "/:version/images/:tag"], this.delete.bind(this));
-    }
+        protected readonly storage: DockerStorage
+    ) {}
 
-    public async list(req: Request, res: Response) {
-        const images = this.dockerStorage.getImages(req.body).map((image) => {
+    @Get("json")
+    public list(@Query() query: DockerService.ImagesOptions) {
+        return this.storage.getImages(query).map((image) => {
             return {
                 Containers: -1,
                 Created: 1747579856,
@@ -35,22 +45,11 @@ export class ImageController {
                 Size: 746947017
             };
         });
-
-        res.status(200).send(images);
     }
 
-    public async inspect(req: Request, res: Response) {
-        const image = this.dockerStorage.getImage(req.params.tag);
-
-        if(!image) {
-            res.status(404).send({
-                message: `Image ${req.params.tag} not found`
-            });
-
-            return;
-        }
-
-        res.status(200).send({
+    @Get(":tag/json")
+    public inspect(@Param("tag", ImagePipe) image: Image) {
+        return {
             Id: image.Id,
             RepoTags: image.RepoTags,
             RepoDigests: [
@@ -124,38 +123,19 @@ export class ImageController {
                 digest: "sha256:3476c857e7c05a7950b3a8a684ffbc82f5cbeffe1b523ea1a92bdefc4539dc57",
                 size: 1609
             }
-        });
+        };
     }
 
-    public async pull(req: Request, res: Response) {
-        const {
-            params: {
-                version = "v1"
-            },
-            body: {
-                fromImage,
-                tag
-            }
-        } = req;
+    @Post("create")
+    public pull(@Param("version") version: string = "v1", @Query() query: PullQuery) {
+        const {fromImage, tag} = query;
 
-        // const stream = this.imagePull(version, fromImage, tag);
-
-        const fixture = (() => {
-            for(const fixture of this.dockerStorage.fixtures) {
-                if(fixture.hasPull(version, fromImage, tag)) {
-                    return fixture;
-                }
-            }
-
-            return null;
-        })();
+        const fixture = this.storage.fixtures.find((fixture) => {
+            return fixture.hasPull(version, fromImage, tag);
+        });
 
         if(!fixture) {
-            res.status(404).send({
-                message: `Not image "${fromImage}:${tag}" found`
-            });
-
-            return;
+            throw new HttpException(404, `Not image "${fromImage}:${tag}" found`);
         }
 
         const stream = fixture.pull(version, fromImage, tag);
@@ -164,76 +144,20 @@ export class ImageController {
             const image = fixture.imageInspect(version, fromImage, tag);
 
             if(!image) {
-                return null;
+                return;
             }
 
             image.Created = new Date(image.Created).getTime();
 
-            this.dockerStorage.addImage(image);
+            this.storage.addImage(image);
         });
 
-        res.status(200).send(stream);
+        return stream;
     }
 
-    public async build(req: Request, res: Response) {
-        const {
-            params: {
-                version = "v1"
-            },
-            body
-        } = req;
-
-        const {
-            t: tag,
-            version: builderVersion = "1"
-        } = body;
-
-        const [imageName, imageTag = "latest"] = tag.split(":");
-
-        const fixture = this.dockerStorage.fixtures.find((fixture) => {
-            return fixture.hasBuild(version, builderVersion, imageName, imageTag);
-        });
-
-        if(!fixture) {
-            res.status(500).send({
-                message: `Fixture not found`
-            });
-
-            return;
-        }
-
-        const stream = fixture.build(version, builderVersion, imageName, imageTag);
-
-        stream.on("end", (): void => {
-            let image = this.dockerStorage.images.find((image) => {
-                return image.RepoTags.includes(`${imageName}:${imageTag}`);
-            });
-
-            if(!image) {
-                image = fixture.imageInspect(version, imageName, imageTag);
-            }
-
-            if(image) {
-                image.Created = new Date(image.Created).getTime();
-                this.dockerStorage.addImage(image);
-            }
-        });
-
-        stream.on("error", (err) => {
-            // Logger.error(err.message);
-        });
-
-        res.status(200).send(stream);
-    }
-
-    public async delete(req: Request, res: Response) {
-        const {
-            params: {
-                tag: imageTag
-            }
-        } = req;
-
-        this.dockerStorage.images = this.dockerStorage.images
+    @Delete(":tag")
+    public remove(@Param("tag") imageTag: string) {
+        this.storage.images = this.storage.images
             .filter((image) => {
                 return !(image.RepoTags.length === 1 && image.RepoTags.includes(imageTag));
             })
@@ -246,7 +170,5 @@ export class ImageController {
 
                 return image;
             });
-
-        res.status(200).send({});
     }
 }

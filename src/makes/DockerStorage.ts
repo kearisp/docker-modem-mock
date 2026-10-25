@@ -2,6 +2,7 @@ import {IncomingMessage} from "http";
 import {Fixtures} from "./Fixtures";
 import {Container} from "../types/Container";
 import {Image} from "../types/Image";
+import {Port} from "../types/Port";
 import {Network} from "../types/Network";
 import {generateId} from "../utils/generateId";
 
@@ -57,8 +58,6 @@ export class DockerStorage {
                         return false;
                     }
 
-                    // console.log(key, value);
-
                     return res;
                 }, true);
 
@@ -83,6 +82,16 @@ export class DockerStorage {
 
     public addContainer(container: Container) {
         this.containers.push(container);
+    }
+
+    public allocateHostPort(type: string, taken: Port[]): number {
+        let port = 32768;
+
+        while(taken.some((p) => p.PublicPort === port && p.Type === type)) {
+            port++;
+        }
+
+        return port;
     }
 
     public getImageById(id: string) {

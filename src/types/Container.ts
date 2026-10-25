@@ -1,6 +1,14 @@
 import {ContainerStatus} from "./ContainerStatus";
 import {EndpointSettings} from "./EndpointSettings";
+import {Port} from "./Port";
 
+
+export type PortBindings = {
+    [port: string]: {
+        HostIp: string;
+        HostPort: string;
+    }[];
+};
 
 export type Container = {
     Id: string;
@@ -15,12 +23,17 @@ export type Container = {
         FinishedAt?: Date;
         Error: string;
     };
+    Ports: Port[];
     HostConfig: {
         ConsoleSize: [number, number];
         NetworkMode: string;
+        PortBindings: PortBindings;
     };
     Config: {
         Image: string;
+        ExposedPorts: {
+            [port: string]: {};
+        };
         Labels: {
             [key: string]: string;
         };

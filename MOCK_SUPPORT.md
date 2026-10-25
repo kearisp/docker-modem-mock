@@ -4,30 +4,30 @@ This document lists all Docker API methods and parameters that can be mocked usi
 
 ## Containers
 
-| Method                   | Endpoint                        | Supported Parameters                                                                            | Support Level |
-|:-------------------------|:--------------------------------|:------------------------------------------------------------------------------------------------|:-------------:|
-| **List Containers**      | `GET /containers/json`          | `all`, `filters` (name, status, label)                                                          |    🟢 80%     |
-| **Create Container**     | `POST /containers/create`       | `Image`, `Labels`, `name` (query), `HostConfig.NetworkMode`, `NetworkingConfig.EndpointsConfig` |    🟡 70%     |
-| **Inspect Container**    | `GET /containers/{id}/json`     | `id`                                                                                            |    🟢 95%     |
-| **Start Container**      | `POST /containers/{id}/start`   | `id`                                                                                            |    🟢 100%    |
-| **Stop Container**       | `POST /containers/{id}/stop`    | `id`, `t`                                                                                       |    🟢 100%    |
-| **Restart Container**    | `POST /containers/{id}/restart` | `id`, `t`                                                                                       |    🟢 100%    |
-| **Rename Container**     | `POST /containers/{id}/rename`  | `id`, `name` (query)                                                                            |    🟢 100%    |
-| **Resize Container TTY** | `POST /containers/{id}/resize`  | `id`, `h`, `w`                                                                                  |    🟢 100%    |
-| **Kill Container**       | `POST /containers/{id}/kill`    | `id`, `signal`                                                                                  |    🟢 100%    |
-| **Pause Container**      | `POST /containers/{id}/pause`   | `id`                                                                                            |    🟢 100%    |
-| **Unpause Container**    | `POST /containers/{id}/unpause` | `id`                                                                                            |    🟢 100%    |
-| **Remove Container**     | `DELETE /containers/{id}`       | `id`, `v`, `force`, `link`                                                                      |    🟡 70%     |
-| **List processes**       | `GET /containers/{id}/top`      | -                                                                                               |     🔴 0%     |
-| **Get container logs**   | `GET /containers/{id}/logs`     | -                                                                                               |     🔴 0%     |
-| **Get changes on FS**    | `GET /containers/{id}/changes`  | -                                                                                               |     🔴 0%     |
-| **Export container**     | `GET /containers/{id}/export`   | -                                                                                               |     🔴 0%     |
-| **Get container stats**  | `GET /containers/{id}/stats`    | -                                                                                               |     🔴 0%     |
-| **Update container**     | `POST /containers/{id}/update`  | -                                                                                               |     🔴 0%     |
-| **Wait container**       | `POST /containers/{id}/wait`    | -                                                                                               |     🔴 0%     |
-| **Archive container**    | `GET /containers/{id}/archive`  | -                                                                                               |     🔴 0%     |
-| **Extract to container** | `PUT /containers/{id}/archive`  | -                                                                                               |     🔴 0%     |
-| **Prune containers**     | `POST /containers/prune`        | -                                                                                               |     🔴 0%     |
+| Method                   | Endpoint                        | Supported Parameters                                                                                                                       | Support Level |
+|:-------------------------|:--------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|:-------------:|
+| **List Containers**      | `GET /containers/json`          | `all`, `filters` (name, status, label); `Ports` in response                                                                                |    🟢 85%     |
+| **Create Container**     | `POST /containers/create`       | `Image`, `Labels`, `name` (query), `HostConfig.NetworkMode`, `HostConfig.PortBindings`, `ExposedPorts`, `NetworkingConfig.EndpointsConfig` |    🟡 75%     |
+| **Inspect Container**    | `GET /containers/{id}/json`     | `id`                                                                                                                                       |    🟢 95%     |
+| **Start Container**      | `POST /containers/{id}/start`   | `id`; host port conflict check and auto-allocation                                                                                         |    🟢 100%    |
+| **Stop Container**       | `POST /containers/{id}/stop`    | `id`, `t`                                                                                                                                  |    🟢 100%    |
+| **Restart Container**    | `POST /containers/{id}/restart` | `id`, `t`                                                                                                                                  |    🟢 100%    |
+| **Rename Container**     | `POST /containers/{id}/rename`  | `id`, `name` (query)                                                                                                                       |    🟢 100%    |
+| **Resize Container TTY** | `POST /containers/{id}/resize`  | `id`, `h`, `w`                                                                                                                             |    🟢 100%    |
+| **Kill Container**       | `POST /containers/{id}/kill`    | `id`, `signal`                                                                                                                             |    🟢 100%    |
+| **Pause Container**      | `POST /containers/{id}/pause`   | `id`                                                                                                                                       |    🟢 100%    |
+| **Unpause Container**    | `POST /containers/{id}/unpause` | `id`                                                                                                                                       |    🟢 100%    |
+| **Remove Container**     | `DELETE /containers/{id}`       | `id`, `v`, `force`, `link`                                                                                                                 |    🟡 70%     |
+| **List processes**       | `GET /containers/{id}/top`      | -                                                                                                                                          |     🔴 0%     |
+| **Get container logs**   | `GET /containers/{id}/logs`     | -                                                                                                                                          |     🔴 0%     |
+| **Get changes on FS**    | `GET /containers/{id}/changes`  | -                                                                                                                                          |     🔴 0%     |
+| **Export container**     | `GET /containers/{id}/export`   | -                                                                                                                                          |     🔴 0%     |
+| **Get container stats**  | `GET /containers/{id}/stats`    | -                                                                                                                                          |     🔴 0%     |
+| **Update container**     | `POST /containers/{id}/update`  | -                                                                                                                                          |     🔴 0%     |
+| **Wait container**       | `POST /containers/{id}/wait`    | -                                                                                                                                          |     🔴 0%     |
+| **Archive container**    | `GET /containers/{id}/archive`  | -                                                                                                                                          |     🔴 0%     |
+| **Extract to container** | `PUT /containers/{id}/archive`  | -                                                                                                                                          |     🔴 0%     |
+| **Prune containers**     | `POST /containers/prune`        | -                                                                                                                                          |     🔴 0%     |
 
 ## Images
 
@@ -94,6 +94,14 @@ This document lists all Docker API methods and parameters that can be mocked usi
 | **Ping**          | `GET /_ping`              | -                    |     🔴 0%     |
 | **Events**        | `GET /events`             | -                    |     🔴 0%     |
 | **Data usage**    | `GET /system/df`          | -                    |     🔴 0%     |
+
+### Ports
+
+- `HostConfig.PortBindings` and `ExposedPorts` (plus the image's `Config.ExposedPorts`, if present) are stored on create.
+- `Ports` in the list response (running containers only) and `NetworkSettings.Ports` in inspect mirror Docker: a binding without `HostIp` is published on both `0.0.0.0` and `::`; an exposed port without a binding has only `PrivatePort` and `Type` (`null` in inspect).
+- An empty `HostPort` is assigned a free host port starting from `32768` on start.
+- Host ports are checked on **start** (like Docker, not on create). A port already bound by a running container fails with `500` and `driver failed programming external connectivity on endpoint <name> (<id>): Bind for <ip>:<port> failed: port is already allocated`.
+- Exposed ports of an image are only known when the pulled image fixture contains `Config.ExposedPorts`.
 
 ---
 

@@ -7,6 +7,9 @@ export type Image = {
     };
     Created: number;
     Config: {
+        ExposedPorts?: {
+            [port: string]: {};
+        };
         Labels: {
             [key: string]: string;
         };

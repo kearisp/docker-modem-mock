@@ -73,4 +73,32 @@ describe("Router", (): void => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(response);
     });
+
+    it.each([
+        {path: "/ping", version: undefined},
+        {path: "/v1/ping", version: "v1"},
+        {path: "/v1.48/ping", version: "v1.48"}
+    ])("should resolve $path with version $version", async ({path, version}): Promise<void> => {
+        const router = new Router();
+
+        router.get("/ping", (req: Request, res: Response): void => {
+            res.send(req.params);
+        });
+
+        const res = await router.exec("GET", path, {});
+
+        expect(res.body.version).toBe(version);
+    });
+
+    it("should not treat a non-version first segment as a version", async (): Promise<void> => {
+        const router = new Router();
+
+        router.get("/:name/:id", (req: Request, res: Response): void => {
+            res.send(req.params);
+        });
+
+        const res = await router.exec("GET", "/vault/1", {});
+
+        expect(res.body).toEqual({name: "vault", id: "1"});
+    });
 });

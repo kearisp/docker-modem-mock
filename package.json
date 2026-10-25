@@ -2,7 +2,7 @@
     "name": "docker-modem-mock",
     "description": "A mock implementation of docker-modem for testing purposes",
     "type": "commonjs",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "license": "MIT",
     "main": "./lib/index.js",
@@ -33,7 +33,7 @@
         "@wocker/core": "^1.0.27"
     },
     "devDependencies": {
-        "@types/dockerode": "^3.3.47",
+        "@types/dockerode": "^4.0.2",
         "@types/jest": "^30.0.0",
         "@types/node": "^25.0.2",
         "docker-modem": "^5.0.7",
